@@ -1,0 +1,2141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Math ATS · Squares & Cube Roots · Grade 8</title>
+<script src="content.js"></script>
+<script src="remedial.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Nunito:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ── VARIABLES ────────────────────────────────────────────────── */
+:root{
+  --bg:#F5F3EE;--bg2:#ECEAE3;--surface:#FFFFFF;
+  --primary:#1A3A8F;--primary-mid:#2B52C8;--primary-lt:#EEF2FF;--primary-dk:#0F2460;
+  --accent:#E89820;--accent-lt:#FEF3C7;
+  --green:#15803D;--green-lt:#DCFCE7;--green-dk:#14532D;
+  --red:#B91C1C;--red-lt:#FEE2E2;
+  --teal:#0E7490;--teal-lt:#CFFAFE;
+  --orange:#C2410C;--orange-lt:#FFF7ED;
+  --text:#1A1A2C;--text-md:#374151;--text-muted:#6B7280;
+  --border:#E5E0D5;--border2:#D1CCC0;
+  --shadow:0 2px 16px rgba(26,58,143,0.09);
+  --shadow-lg:0 8px 36px rgba(26,58,143,0.14);
+  --r:14px;--r-sm:8px;--r-lg:22px;--r-xl:28px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{font-size:16px}
+body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden}
+button{font-family:'Nunito',sans-serif;cursor:pointer;border:none;outline:none}
+input,textarea{font-family:'Nunito',sans-serif;outline:none}
+table{border-collapse:collapse;width:100%;margin:12px 0}
+.content-table th{background:var(--primary);color:#fff;padding:8px 12px;font-family:'Outfit',sans-serif;font-weight:700;font-size:0.82rem;text-align:center}
+.content-table td{padding:8px 12px;text-align:center;font-size:0.85rem;font-weight:600;border:1px solid var(--border)}
+.content-table tr:nth-child(even) td{background:var(--primary-lt)}
+
+/* ── SCREENS ─────────────────────────────────────────────────── */
+.screen{display:none}
+.screen.active{display:flex}
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+@keyframes popIn{from{opacity:0;transform:scale(0.85)}to{opacity:1;transform:scale(1)}}
+@keyframes sparkle{0%{opacity:1;transform:scale(0) rotate(0deg)}100%{opacity:0;transform:scale(3) rotate(180deg)}}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.6}}
+@keyframes slideIn{from{opacity:0;transform:translateX(20px)}to{opacity:1;transform:translateX(0)}}
+.anim-fadeup{animation:fadeUp .4s ease both}
+.anim-popin{animation:popIn .35s ease both}
+
+/* ══ SPLASH ══════════════════════════════════════════════════════ */
+#screen-splash{flex-direction:column;align-items:center;justify-content:center;
+  min-height:100vh;background:linear-gradient(135deg,var(--primary-dk) 0%,var(--primary) 60%,var(--primary-mid) 100%)}
+.splash-brand{font-family:'Outfit',sans-serif;font-weight:900;font-size:3.5rem;
+  color:#fff;letter-spacing:-2px;margin-bottom:8px}
+.splash-brand em{color:var(--accent);font-style:normal}
+.splash-tagline{color:rgba(255,255,255,0.6);font-size:1rem;font-weight:500;letter-spacing:0.3px;margin-bottom:32px}
+.splash-dots{display:flex;gap:8px}
+.splash-dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,0.3)}
+.splash-dot.active{background:var(--accent);animation:pulse 1s ease infinite}
+.splash-dot:nth-child(2){animation-delay:.2s}
+.splash-dot:nth-child(3){animation-delay:.4s}
+
+/* ══ ENTRY ═══════════════════════════════════════════════════════ */
+#screen-entry{flex-direction:column;align-items:center;justify-content:center;min-height:100vh;padding:20px}
+.entry-wrap{width:100%;max-width:460px;animation:fadeUp .5s ease}
+.entry-card{background:var(--surface);border-radius:var(--r-xl);padding:48px 44px;
+  box-shadow:var(--shadow-lg);border:2px solid var(--border)}
+.entry-chip{display:inline-flex;align-items:center;gap:6px;background:var(--primary-lt);
+  color:var(--primary);font-family:'Outfit',sans-serif;font-weight:700;font-size:0.75rem;
+  letter-spacing:1.5px;text-transform:uppercase;padding:6px 14px;border-radius:99px;margin-bottom:22px}
+.entry-card h1{font-family:'Outfit',sans-serif;font-weight:900;font-size:2.1rem;
+  color:var(--text);line-height:1.15;margin-bottom:10px}
+.entry-card h1 span{color:var(--primary-mid)}
+.entry-card p{color:var(--text-muted);font-size:0.93rem;line-height:1.65;margin-bottom:28px}
+.field-label{font-size:0.8rem;font-weight:700;color:var(--text-md);margin-bottom:6px;display:block}
+.entry-input{width:100%;padding:13px 16px;border:2px solid var(--border);border-radius:var(--r);
+  font-size:1rem;background:var(--bg);color:var(--text);transition:border-color .2s;margin-bottom:16px}
+.entry-input:focus{border-color:var(--primary-mid)}
+.btn-start{width:100%;padding:15px;background:var(--primary);color:#fff;border-radius:var(--r);
+  font-family:'Outfit',sans-serif;font-weight:800;font-size:1rem;letter-spacing:0.3px;
+  transition:all .2s;box-shadow:0 4px 20px rgba(26,58,143,0.3)}
+.btn-start:hover{background:var(--primary-mid);transform:translateY(-2px);box-shadow:0 6px 24px rgba(26,58,143,0.38)}
+.entry-tags{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:24px}
+.entry-tag{background:var(--bg2);color:var(--text-muted);padding:5px 12px;
+  border-radius:99px;font-size:0.78rem;font-weight:700}
+
+/* ══ DASHBOARD ═══════════════════════════════════════════════════ */
+#screen-dashboard{flex-direction:column;min-height:100vh}
+.app-header{background:var(--primary);color:#fff;padding:16px 28px;
+  display:flex;align-items:center;justify-content:space-between;gap:12px}
+.app-logo{font-family:'Outfit',sans-serif;font-weight:900;font-size:1.25rem;letter-spacing:-0.5px}
+.app-logo em{color:var(--accent);font-style:normal}
+.hdr-user{display:flex;align-items:center;gap:10px}
+.hdr-avatar{width:34px;height:34px;border-radius:50%;background:var(--accent);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Outfit',sans-serif;font-weight:800;font-size:0.88rem;color:var(--primary)}
+.hdr-name{font-weight:700;font-size:0.88rem;color:rgba(255,255,255,0.9)}
+.hdr-btn{background:rgba(255,255,255,0.12);color:#fff;padding:7px 14px;border-radius:var(--r-sm);
+  font-size:0.78rem;font-weight:700;transition:background .2s}
+.hdr-btn:hover{background:rgba(255,255,255,0.22)}
+.dash-layout{display:grid;grid-template-columns:1fr 300px;gap:24px;
+  padding:28px;max-width:1140px;margin:0 auto;width:100%}
+@media(max-width:860px){.dash-layout{grid-template-columns:1fr;padding:18px}}
+.dash-chapter-title{font-family:'Outfit',sans-serif;font-weight:900;font-size:1.55rem;
+  color:var(--text);margin-bottom:4px}
+.dash-chapter-sub{color:var(--text-muted);font-size:0.88rem;margin-bottom:22px}
+.subtopics-list{display:flex;flex-direction:column;gap:12px}
+.st-card{background:var(--surface);border:2px solid var(--border);border-radius:var(--r);
+  padding:18px 20px;transition:all .2s;position:relative}
+.st-main{display:flex;align-items:center;gap:16px}
+.st-card.unlocked .st-main{cursor:pointer}
+.st-card.unlocked:hover{border-color:var(--primary-mid);box-shadow:var(--shadow)}
+.st-card.locked{opacity:0.5;cursor:not-allowed}
+.st-card.completed{border-color:var(--green)}
+.st-icon{width:46px;height:46px;border-radius:12px;display:flex;align-items:center;
+  justify-content:center;font-family:'Outfit',sans-serif;font-weight:900;font-size:1.3rem;flex-shrink:0}
+.st-icon.locked-i{background:var(--bg2);color:var(--text-muted)}
+.st-icon.open-i{background:var(--primary);color:#fff}
+.st-icon.done-i{background:var(--green);color:#fff}
+.st-body{flex:1;min-width:0}
+.st-title{font-family:'Outfit',sans-serif;font-weight:700;font-size:1rem;margin-bottom:5px}
+.st-row{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:8px}
+.chip{font-size:0.72rem;font-weight:700;padding:2px 9px;border-radius:99px;text-transform:uppercase;letter-spacing:0.4px}
+.chip-easy{background:var(--green-lt);color:var(--green-dk)}
+.chip-med{background:var(--accent-lt);color:#92400E}
+.chip-hard{background:var(--red-lt);color:var(--red)}
+.chip-locked{background:var(--bg2);color:var(--text-muted)}
+.chip-open{background:var(--primary-lt);color:var(--primary)}
+.chip-done{background:var(--green-lt);color:var(--green)}
+.st-prog{height:5px;background:var(--bg2);border-radius:99px;overflow:hidden}
+.st-prog-fill{height:100%;border-radius:99px;background:var(--primary-mid);transition:width .6s ease}
+.st-right{flex-shrink:0;display:flex;align-items:center;gap:10px}
+.st-percent{font-family:'Outfit',sans-serif;font-weight:800;font-size:0.92rem;color:var(--primary)}
+.st-toggle{width:34px;height:34px;border-radius:10px;background:var(--bg2);color:var(--text-md);
+  display:flex;align-items:center;justify-content:center;font-size:1rem;font-weight:800;transition:all .2s}
+.st-toggle:hover{background:var(--primary-lt);color:var(--primary)}
+.st-toggle.open{background:var(--primary-lt);color:var(--primary)}
+.st-concepts{display:none;margin-top:16px;padding-top:16px;border-top:1px solid var(--border)}
+.st-concepts.open{display:flex;flex-direction:column;gap:10px}
+.concept-item{background:var(--bg);border:1px solid var(--border);border-radius:12px;padding:12px 14px}
+.concept-item.clickable{cursor:pointer;transition:border-color .2s,transform .2s,box-shadow .2s}
+.concept-item.clickable:hover{border-color:var(--primary-mid);transform:translateX(4px);box-shadow:var(--shadow)}
+.concept-item.done{border-color:var(--green)}
+.concept-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:6px}
+.concept-item-title{font-size:0.8rem;font-weight:800;color:var(--text);line-height:1.35}
+.concept-pct{font-family:'Outfit',sans-serif;font-weight:800;font-size:0.82rem;color:var(--primary)}
+.concept-meta{font-size:0.76rem;color:var(--text-muted);margin-bottom:8px}
+.concept-prog{height:6px;background:var(--bg2);border-radius:99px;overflow:hidden}
+.concept-prog-fill{height:100%;border-radius:99px;transition:width .6s ease}
+/* sidebar */
+.side-box{background:var(--surface);border:2px solid var(--border);border-radius:var(--r);
+  padding:18px;margin-bottom:16px}
+.side-box-title{font-family:'Outfit',sans-serif;font-weight:700;font-size:0.78rem;
+  text-transform:uppercase;letter-spacing:1px;color:var(--text-muted);margin-bottom:14px}
+.mastery-row{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.mastery-label{font-size:0.8rem;font-weight:600;color:var(--text-md);width:80px;flex-shrink:0;font-family:'Outfit',sans-serif}
+.mastery-bar{flex:1;height:8px;background:var(--bg2);border-radius:99px;overflow:hidden}
+.mastery-fill{height:100%;border-radius:99px;transition:width .8s ease}
+.mastery-pct{font-size:0.75rem;font-weight:800;color:var(--primary);width:30px;text-align:right}
+.stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.stat-box{background:var(--bg);border-radius:var(--r-sm);padding:12px;text-align:center}
+.stat-val{font-family:'Outfit',sans-serif;font-weight:900;font-size:1.55rem;color:var(--primary)}
+.stat-lbl{font-size:0.72rem;color:var(--text-muted);margin-top:2px}
+
+/* ══ LEARN SCREEN ════════════════════════════════════════════════ */
+#screen-learn{flex-direction:column;min-height:100vh}
+.learn-hdr{background:var(--surface);border-bottom:2px solid var(--border);
+  padding:12px 24px;display:flex;align-items:center;gap:14px}
+.btn-back{background:var(--bg2);color:var(--text-md);padding:8px 14px;border-radius:var(--r-sm);
+  font-weight:700;font-size:0.82rem;display:flex;align-items:center;gap:5px;transition:background .2s}
+.btn-back:hover{background:var(--border2)}
+.learn-breadcrumb{font-size:0.85rem;color:var(--text-muted);flex:1}
+.learn-breadcrumb strong{color:var(--text);font-weight:700}
+/* stepper */
+.stepper{display:flex;align-items:center;gap:0;padding:0 24px;
+  background:var(--surface);border-bottom:2px solid var(--border);overflow-x:auto}
+.step-btn{display:flex;align-items:center;gap:8px;padding:14px 20px;
+  font-family:'Outfit',sans-serif;font-weight:700;font-size:0.83rem;color:var(--text-muted);
+  border-bottom:3px solid transparent;white-space:nowrap;background:none;cursor:pointer;
+  transition:color .2s,border-color .2s}
+.step-btn.active{color:var(--primary);border-bottom-color:var(--primary)}
+.step-btn.done-step{color:var(--green)}
+.step-num{width:22px;height:22px;border-radius:50%;background:var(--bg2);
+  display:flex;align-items:center;justify-content:center;font-size:0.75rem;font-weight:800;flex-shrink:0}
+.step-btn.active .step-num{background:var(--primary);color:#fff}
+.step-btn.done-step .step-num{background:var(--green);color:#fff}
+.step-sep{color:var(--border2);font-size:0.8rem;padding:0 2px;flex-shrink:0}
+/* learn body */
+.learn-body{max-width:800px;margin:0 auto;padding:28px 24px;width:100%}
+.panel{display:none}
+.panel.active{display:block;animation:fadeUp .35s ease}
+.concept-title{font-family:'Outfit',sans-serif;font-weight:900;font-size:1.55rem;
+  color:var(--text);margin-bottom:16px;line-height:1.2}
+.explain-text{font-size:0.97rem;line-height:1.8;color:var(--text-md)}
+.explain-text strong{color:var(--primary)}
+.key-box{background:var(--primary-lt);border-left:4px solid var(--primary);
+  border-radius:0 var(--r-sm) var(--r-sm) 0;padding:14px 18px;margin:18px 0;font-size:0.94rem;line-height:1.6}
+.key-box strong{font-family:'Outfit',sans-serif;color:var(--primary-dk)}
+.story-card{background:var(--accent-lt);border:2px solid #FCD34D;border-radius:var(--r);padding:22px 24px;margin-bottom:20px}
+.story-head{display:flex;align-items:center;gap:8px;margin-bottom:12px}
+.story-emoji{font-size:1.4rem}
+.story-head-text{font-family:'Outfit',sans-serif;font-weight:800;font-size:0.85rem;
+  text-transform:uppercase;letter-spacing:0.5px;color:#92400E}
+.story-body{font-size:0.95rem;line-height:1.8;color:#78350F}
+.worked-card{background:var(--surface);border:2px solid var(--border);border-radius:var(--r);
+  overflow:hidden;margin-bottom:20px}
+.worked-head{background:var(--primary);color:#fff;padding:12px 20px;
+  font-family:'Outfit',sans-serif;font-weight:700;font-size:0.85rem;letter-spacing:0.3px}
+.worked-body{padding:18px 22px}
+.worked-line{font-family:'JetBrains Mono',monospace;font-size:0.85rem;color:var(--text-md);
+  line-height:1.75;padding:2px 0}
+.worked-line.hl{color:var(--primary-mid);font-weight:500}
+.worked-line.sep{color:var(--border2)}
+.btn-continue{background:var(--accent);color:#1A1A2C;padding:13px 32px;border-radius:var(--r);
+  font-family:'Outfit',sans-serif;font-weight:800;font-size:0.95rem;
+  transition:all .2s;box-shadow:0 4px 16px rgba(232,152,32,0.3);margin-top:20px;display:inline-flex;align-items:center;gap:8px}
+.btn-continue:hover{background:#D48000;transform:translateY(-2px)}
+.btn-practice{background:var(--primary);color:#fff;padding:13px 32px;border-radius:var(--r);
+  font-family:'Outfit',sans-serif;font-weight:800;font-size:0.95rem;
+  transition:all .2s;box-shadow:0 4px 16px rgba(26,58,143,0.28);margin-top:20px;display:inline-flex;align-items:center;gap:8px}
+.btn-practice:hover{background:var(--primary-mid);transform:translateY(-2px)}
+
+/* ══ QUESTION SCREEN ═════════════════════════════════════════════ */
+#screen-question{flex-direction:column;min-height:100vh;background:var(--bg)}
+.q-hdr{background:var(--surface);border-bottom:2px solid var(--border);
+  padding:12px 24px;display:flex;align-items:center;gap:16px}
+.q-progress-wrap{flex:1;max-width:280px}
+.q-prog-label{display:flex;justify-content:space-between;font-size:0.78rem;font-weight:700;color:var(--text-muted);margin-bottom:6px}
+.q-prog-bar{height:7px;background:var(--bg2);border-radius:99px;overflow:hidden}
+.q-prog-fill{height:100%;background:var(--primary-mid);border-radius:99px;transition:width .5s ease}
+.q-concept-label{font-size:0.8rem;font-weight:700;color:var(--text-muted);margin-left:auto}
+.q-body{max-width:700px;margin:0 auto;padding:28px 20px;width:100%}
+/* question number + level */
+.q-top-row{display:flex;align-items:center;gap:10px;margin-bottom:18px}
+.q-num{font-family:'Outfit',sans-serif;font-weight:900;font-size:0.88rem;color:var(--text-muted)}
+.level-pip{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.level-pip.l1{background:var(--green)}
+.level-pip.l2{background:var(--accent)}
+.level-pip.l3{background:var(--red)}
+.level-label{font-size:0.78rem;font-weight:700}
+.level-label.l1{color:var(--green)}
+.level-label.l2{color:#92400E}
+.level-label.l3{color:var(--red)}
+/* main question card */
+.q-card{background:var(--surface);border:2.5px solid var(--border);border-radius:var(--r-lg);
+  padding:26px 28px;box-shadow:var(--shadow);transition:border-color .3s,background .3s}
+.q-card.state-correct{border-color:var(--green);background:var(--green-lt)}
+.q-card.state-wrong{border-color:var(--red)}
+.q-card.state-remedial{border-color:var(--orange);background:var(--orange-lt)}
+.q-text{font-size:1.05rem;line-height:1.72;color:var(--text);font-weight:700;margin-bottom:20px}
+.q-input-row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.q-input{flex:1;min-width:160px;padding:12px 16px;border:2px solid var(--border);
+  border-radius:var(--r);font-size:0.98rem;background:var(--bg);color:var(--text);
+  transition:border-color .2s}
+.q-input:focus{border-color:var(--primary-mid)}
+.q-input.inp-wrong{border-color:var(--red);background:var(--red-lt)}
+.q-input.inp-correct{border-color:var(--green);background:var(--green-lt)}
+.btn-check{background:var(--primary);color:#fff;padding:12px 26px;border-radius:var(--r);
+  font-family:'Outfit',sans-serif;font-weight:800;font-size:0.9rem;flex-shrink:0;transition:all .2s}
+.btn-check:hover{background:var(--primary-mid);transform:translateY(-1px)}
+.btn-check:disabled{opacity:0.45;cursor:not-allowed;transform:none}
+/* feedback */
+.feedback{padding:12px 16px;border-radius:var(--r-sm);font-size:0.9rem;font-weight:700;
+  margin-top:14px;display:none;animation:fadeUp .3s ease;line-height:1.5}
+.feedback.show{display:block}
+.feedback.fb-correct{background:var(--green-lt);color:var(--green-dk);border:1.5px solid var(--green)}
+.feedback.fb-wrong{background:var(--red-lt);color:var(--red);border:1.5px solid var(--red)}
+.feedback.fb-encourage{background:var(--accent-lt);color:#92400E;border:1.5px solid #FCD34D}
+.feedback.fb-info{background:var(--primary-lt);color:var(--primary);border:1.5px solid var(--primary-mid)}
+.ped-box{margin-top:12px;background:var(--surface);border:1.5px solid var(--border);border-radius:var(--r);padding:14px 16px}
+.ped-box-title{font-family:'Outfit',sans-serif;font-weight:800;font-size:0.8rem;text-transform:uppercase;letter-spacing:0.5px;color:var(--primary);margin-bottom:6px}
+.ped-box-text{font-size:0.88rem;color:var(--text-md);line-height:1.6}
+.ped-check-row{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:12px}
+.ped-check-input{flex:1;min-width:140px;padding:10px 14px;border:2px solid var(--border);border-radius:var(--r-sm);font-size:0.9rem;background:var(--bg)}
+.ped-check-input:focus{border-color:var(--primary-mid)}
+.ped-check-feedback{margin-top:10px;font-size:0.84rem;font-weight:700;line-height:1.5}
+.ped-check-feedback.ok{color:var(--green-dk)}
+.ped-check-feedback.bad{color:var(--red)}
+/* attempt dots */
+.attempt-row{display:flex;align-items:center;gap:6px;margin-top:14px}
+.attempt-dot{width:9px;height:9px;border-radius:50%;background:var(--bg2);border:2px solid var(--border2);transition:all .3s}
+.attempt-dot.used{background:var(--red);border-color:var(--red)}
+.attempt-dot.success{background:var(--green);border-color:var(--green)}
+.attempt-label{font-size:0.75rem;color:var(--text-muted);font-weight:600;margin-left:4px}
+/* hint area */
+.hint-area{margin-top:16px}
+.btn-hint{background:var(--teal-lt);color:var(--teal);border:1.5px solid var(--teal);
+  padding:8px 18px;border-radius:var(--r-sm);font-family:'Outfit',sans-serif;font-weight:700;
+  font-size:0.82rem;display:inline-flex;align-items:center;gap:6px;transition:all .2s}
+.btn-hint:hover{background:var(--teal);color:#fff}
+.hint-reveal{background:var(--teal-lt);border:1.5px solid var(--teal);border-radius:var(--r);
+  padding:14px 18px;margin-top:10px;display:none;animation:fadeUp .3s ease}
+.hint-reveal.show{display:block}
+.hint-level-label{font-family:'Outfit',sans-serif;font-weight:800;font-size:0.72rem;
+  text-transform:uppercase;letter-spacing:0.5px;color:var(--teal);opacity:0.8;margin-bottom:4px}
+.hint-text{font-size:0.9rem;color:var(--teal);line-height:1.65}
+.hint-penalty{font-size:0.74rem;color:var(--red);margin-top:6px;font-weight:700}
+/* mastery bar */
+.mastery-display{background:var(--surface);border:1.5px solid var(--border);
+  border-radius:var(--r);padding:12px 16px;margin-top:16px}
+.mastery-display-label{display:flex;justify-content:space-between;font-size:0.78rem;
+  font-weight:700;color:var(--text-muted);margin-bottom:7px}
+.mastery-display-bar{height:9px;background:var(--bg2);border-radius:99px;overflow:hidden}
+.mastery-display-fill{height:100%;border-radius:99px;transition:width .8s ease}
+/* confidence */
+.conf-wrap{background:var(--surface);border:2px solid var(--border);border-radius:var(--r);
+  padding:18px 20px;margin-top:16px;display:none;animation:fadeUp .35s ease}
+.conf-wrap.show{display:block}
+.conf-q{font-weight:700;font-size:0.9rem;margin-bottom:10px;color:var(--text-md)}
+.conf-stars{display:flex;gap:6px;margin-bottom:14px}
+.star{font-size:1.5rem;cursor:pointer;transition:transform .15s;opacity:0.3;user-select:none}
+.star.lit{opacity:1}
+.star:hover{transform:scale(1.2)}
+.btn-next{background:var(--green);color:#fff;padding:12px 28px;border-radius:var(--r);
+  font-family:'Outfit',sans-serif;font-weight:800;font-size:0.9rem;
+  display:inline-flex;align-items:center;gap:7px;transition:all .2s}
+.btn-next:hover{background:var(--green-dk);transform:translateY(-1px)}
+.btn-next:disabled{opacity:0.4;cursor:not-allowed;transform:none}
+/* spark */
+.spark{position:fixed;pointer-events:none;font-size:1.1rem;z-index:9999;
+  animation:sparkle .7s ease forwards}
+
+/* ══ REMEDIAL SCREEN ════════════════════════════════════════════ */
+#screen-remedial{flex-direction:column;min-height:100vh;background:var(--orange-lt)}
+.rem-hdr{background:var(--orange);color:#fff;padding:16px 24px;display:flex;align-items:center;gap:14px}
+.rem-hdr-title{font-family:'Outfit',sans-serif;font-weight:800;font-size:1rem}
+.rem-body{max-width:720px;margin:0 auto;padding:28px 22px;width:100%}
+.rem-badge{display:inline-flex;align-items:center;gap:6px;background:var(--orange);color:#fff;
+  font-family:'Outfit',sans-serif;font-weight:700;font-size:0.78rem;text-transform:uppercase;
+  letter-spacing:1px;padding:5px 14px;border-radius:99px;margin-bottom:16px}
+.rem-title{font-family:'Outfit',sans-serif;font-weight:900;font-size:1.4rem;margin-bottom:16px;color:var(--text)}
+.rem-explain{font-size:0.96rem;line-height:1.8;color:var(--text-md);margin-bottom:20px}
+.rem-explain strong{color:var(--orange)}
+.rem-story-card{background:#FFF7ED;border:2px solid var(--orange);border-radius:var(--r);padding:20px 22px;margin-bottom:22px}
+.rem-story-head{font-family:'Outfit',sans-serif;font-weight:800;font-size:0.85rem;
+  text-transform:uppercase;letter-spacing:0.5px;color:var(--orange);margin-bottom:10px}
+.rem-story-body{font-size:0.94rem;line-height:1.8;color:#78350F}
+.rem-bridge-title{font-family:'Outfit',sans-serif;font-weight:800;font-size:0.9rem;
+  color:var(--orange);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:14px}
+.rem-q{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--r);
+  padding:18px 20px;margin-bottom:12px}
+.rem-q-text{font-weight:700;font-size:0.95rem;color:var(--text);margin-bottom:12px}
+.rem-input-row{display:flex;gap:8px;flex-wrap:wrap}
+.rem-input{flex:1;min-width:140px;padding:10px 14px;border:2px solid var(--border);
+  border-radius:var(--r-sm);font-size:0.9rem;background:var(--bg)}
+.rem-input:focus{border-color:var(--orange)}
+.btn-rem-check{background:var(--orange);color:#fff;padding:10px 20px;border-radius:var(--r-sm);
+  font-family:'Outfit',sans-serif;font-weight:800;font-size:0.85rem;transition:all .2s}
+.btn-rem-check:hover{background:var(--orange-lt);color:var(--orange)}
+.rem-feedback{font-size:0.88rem;font-weight:700;margin-top:8px;padding:8px 12px;border-radius:var(--r-sm);display:none}
+.rem-feedback.show{display:block}
+.rem-feedback.ok{background:var(--green-lt);color:var(--green-dk)}
+.rem-feedback.bad{background:var(--red-lt);color:var(--red)}
+.btn-back-main{background:var(--primary);color:#fff;padding:13px 28px;border-radius:var(--r);
+  font-family:'Outfit',sans-serif;font-weight:800;font-size:0.9rem;
+  display:inline-flex;align-items:center;gap:7px;transition:all .2s;margin-top:24px}
+.btn-back-main:hover{background:var(--primary-mid);transform:translateY(-1px)}
+
+/* ══ CONCEPT DONE ════════════════════════════════════════════════ */
+#screen-concept-done{flex-direction:column;align-items:center;justify-content:center;
+  min-height:100vh;padding:20px;background:var(--bg)}
+.done-card{background:var(--surface);border-radius:var(--r-xl);padding:44px 40px;
+  max-width:480px;width:100%;box-shadow:var(--shadow-lg);text-align:center;animation:popIn .4s ease}
+.done-icon-big{font-size:3.8rem;margin-bottom:14px}
+.done-h2{font-family:'Outfit',sans-serif;font-weight:900;font-size:1.75rem;margin-bottom:8px}
+.done-desc{color:var(--text-muted);font-size:0.92rem;line-height:1.6;margin-bottom:20px}
+.done-chip{display:inline-block;padding:7px 18px;border-radius:99px;
+  font-family:'Outfit',sans-serif;font-weight:700;font-size:0.82rem;margin-bottom:22px}
+.done-chip.mastered{background:var(--green-lt);color:var(--green-dk);border:1.5px solid var(--green)}
+.done-chip.partial{background:var(--accent-lt);color:#92400E;border:1.5px solid #FCD34D}
+.done-chip.needs{background:var(--red-lt);color:var(--red);border:1.5px solid var(--red)}
+.done-stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:24px}
+.done-stat{background:var(--bg);border-radius:var(--r-sm);padding:13px 8px;text-align:center}
+.done-stat-v{font-family:'Outfit',sans-serif;font-weight:900;font-size:1.45rem;color:var(--primary)}
+.done-stat-l{font-size:0.72rem;color:var(--text-muted);margin-top:2px}
+.done-btns{display:flex;flex-direction:column;gap:10px}
+.btn-next-concept{background:var(--primary);color:#fff;padding:13px;border-radius:var(--r);
+  font-family:'Outfit',sans-serif;font-weight:800;font-size:0.95rem;transition:all .2s;width:100%;text-align:center}
+.btn-next-concept:hover{background:var(--primary-mid);transform:translateY(-1px)}
+.btn-dash{background:var(--bg2);color:var(--text-md);padding:11px;border-radius:var(--r);
+  font-family:'Outfit',sans-serif;font-weight:700;font-size:0.9rem;transition:background .2s;width:100%;text-align:center}
+.btn-dash:hover{background:var(--border)}
+
+/* ══ SUMMARY ═════════════════════════════════════════════════════ */
+#screen-summary{flex-direction:column;min-height:100vh}
+.sum-hdr{background:var(--primary);color:#fff;padding:24px 28px;text-align:center}
+.sum-hdr h1{font-family:'Outfit',sans-serif;font-weight:900;font-size:1.7rem;margin-bottom:4px}
+.sum-hdr p{opacity:0.65;font-size:0.88rem}
+.sum-body{max-width:900px;margin:0 auto;padding:28px 22px;width:100%;
+  display:grid;grid-template-columns:1fr 1fr;gap:20px}
+@media(max-width:680px){.sum-body{grid-template-columns:1fr}}
+.sum-card{background:var(--surface);border:2px solid var(--border);border-radius:var(--r);padding:20px}
+.sum-card h3{font-family:'Outfit',sans-serif;font-weight:700;font-size:0.78rem;
+  text-transform:uppercase;letter-spacing:1px;color:var(--text-muted);margin-bottom:14px}
+.sum-full{grid-column:1/-1}
+.payload-pre{background:var(--bg);border-radius:var(--r-sm);padding:14px;
+  font-family:'JetBrains Mono',monospace;font-size:0.76rem;color:var(--text-md);
+  line-height:1.7;white-space:pre;overflow-x:auto;max-height:280px;overflow-y:auto}
+.btn-copy{background:var(--primary-lt);color:var(--primary);border:1.5px solid var(--primary-mid);
+  padding:9px 20px;border-radius:var(--r-sm);font-family:'Outfit',sans-serif;font-weight:700;font-size:0.82rem;transition:all .2s}
+.btn-copy:hover{background:var(--primary);color:#fff}
+.sum-btn-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px;justify-content:center}
+
+/* ── UTILS ────────────────────────────────────────────────────── */
+.hidden{display:none!important}
+.mt-8{margin-top:8px}.mt-12{margin-top:12px}.mt-16{margin-top:16px}.mt-20{margin-top:20px}
+</style>
+</head>
+<body>
+
+<!-- ═════ SPLASH ══════════════════════════════════════════════════ -->
+<div id="screen-splash" class="screen active">
+  <div class="splash-brand anim-fadeup">Math<em>ATS</em></div>
+  <div class="splash-tagline anim-fadeup" style="animation-delay:.15s">Adaptive Tutoring · Squares & Cube Roots · Grade 8</div>
+  <div class="splash-dots anim-fadeup" style="animation-delay:.3s">
+    <div class="splash-dot active"></div>
+    <div class="splash-dot active" style="animation-delay:.2s"></div>
+    <div class="splash-dot active" style="animation-delay:.4s"></div>
+  </div>
+</div>
+
+<!-- ═════ ENTRY ════════════════════════════════════════════════════ -->
+<div id="screen-entry" class="screen">
+  <div class="entry-wrap">
+    <div class="entry-card">
+      <div class="entry-chip">🎓 ET605 · Team 18Forever</div>
+      <h1>Welcome to<br><span>Math ATS</span></h1>
+      <p>Your personal adaptive tutor for Squares, Square Roots, Cubes and Cube Roots. The system will learn how you think and adapt to help you master every concept.</p>
+      <label class="field-label">Your first name</label>
+      <input type="text" id="name-input" class="entry-input" placeholder="Enter your name..." maxlength="28" />
+      <button class="btn-start" onclick="startSession()">Begin Learning →</button>
+      <div class="entry-tags">
+        <span class="entry-tag">📐 Perfect Squares</span>
+        <span class="entry-tag">√ Square Roots</span>
+        <span class="entry-tag">∛ Cube Roots</span>
+        <span class="entry-tag" id="entry-subtopics-count">6 Subtopics</span>
+        <span class="entry-tag" id="entry-concepts-count">20 Concepts</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═════ DASHBOARD ════════════════════════════════════════════════ -->
+<div id="screen-dashboard" class="screen">
+  <div class="app-header">
+    <div class="app-logo">Math<em>ATS</em></div>
+    <div class="hdr-user">
+      <div class="hdr-avatar" id="hdr-avatar">?</div>
+      <div class="hdr-name" id="hdr-name">Student</div>
+    </div>
+    <button class="hdr-btn" onclick="showSummary()">📊 Summary</button>
+  </div>
+  <div class="dash-layout">
+    <div>
+      <div class="dash-chapter-title">Squares, Square Roots,<br>Cubes &amp; Cube Roots</div>
+      <div class="dash-chapter-sub" id="dash-chapter-sub">CBSE Grade 8 · 6 Subtopics · 20 Concepts · 60 Questions</div>
+      <div class="subtopics-list" id="subtopics-list"></div>
+    </div>
+    <div>
+      <div class="side-box">
+        <div class="side-box-title">Topic Mastery</div>
+        <div id="mastery-sidebar"></div>
+      </div>
+      <div class="side-box">
+        <div class="side-box-title">Session Stats</div>
+        <div class="stat-grid" id="stats-sidebar"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═════ LEARN ════════════════════════════════════════════════════ -->
+<div id="screen-learn" class="screen">
+  <div class="learn-hdr">
+    <button class="btn-back" onclick="goToDashboard()">← Back</button>
+    <div class="learn-breadcrumb" id="learn-breadcrumb">—</div>
+  </div>
+  <div class="stepper" id="stepper"></div>
+  <div class="learn-body" id="learn-body"></div>
+</div>
+
+<!-- ═════ QUESTION ══════════════════════════════════════════════════ -->
+<div id="screen-question" class="screen">
+  <div class="q-hdr">
+    <button class="btn-back" onclick="goToDashboard()">← Dashboard</button>
+    <div class="q-progress-wrap">
+      <div class="q-prog-label">
+        <span id="q-hdr-label">Q1 of 3</span>
+        <span id="q-hdr-score">Score: 0</span>
+      </div>
+      <div class="q-prog-bar"><div class="q-prog-fill" id="q-prog-fill" style="width:0%"></div></div>
+    </div>
+    <div class="q-concept-label" id="q-concept-label"></div>
+  </div>
+  <div class="q-body">
+    <div class="q-top-row">
+      <span class="q-num" id="q-num-label">Q1</span>
+      <span class="level-pip" id="q-level-pip"></span>
+      <span class="level-label" id="q-level-label"></span>
+    </div>
+    <div class="q-card" id="q-card">
+      <div class="q-text" id="q-text">Loading...</div>
+      <div class="q-input-row">
+        <input type="text" class="q-input" id="q-input" placeholder="Type your answer here..." />
+        <button class="btn-check" id="btn-check" onclick="submitAnswer()">Check ✓</button>
+      </div>
+      <div class="feedback" id="q-feedback"></div>
+      <div id="q-extra-action"></div>
+      <div class="attempt-row" id="attempt-row">
+        <div class="attempt-dot" id="d1"></div>
+        <div class="attempt-dot" id="d2"></div>
+        <div class="attempt-dot" id="d3"></div>
+        <div class="attempt-dot" id="d4"></div>
+        <span class="attempt-label">Attempts</span>
+      </div>
+    </div>
+    <div class="hint-area">
+      <button class="btn-hint" id="btn-hint" onclick="requestHint()">💡 Need a hint?</button>
+      <div class="hint-reveal" id="hint-reveal">
+        <div class="hint-level-label" id="hint-level-label">Hint</div>
+        <div class="hint-text" id="hint-text"></div>
+        <div class="hint-penalty" id="hint-penalty"></div>
+      </div>
+    </div>
+    <div class="mastery-display" id="mastery-display">
+      <div class="mastery-display-label">
+        <span id="md-label">Mastery</span>
+        <span id="md-pct">0%</span>
+      </div>
+      <div class="mastery-display-bar">
+        <div class="mastery-display-fill" id="md-fill" style="width:0%"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═════ REMEDIAL ══════════════════════════════════════════════════ -->
+<div id="screen-remedial" class="screen">
+  <div class="rem-hdr" style="background:var(--orange)">
+    <button class="btn-back" style="background:rgba(255,255,255,0.2);color:#fff" onclick="goToDashboard()">← Dashboard</button>
+    <div class="rem-hdr-title">🔄 Let's try a different approach</div>
+  </div>
+  <div class="rem-body">
+    <div class="rem-badge">📚 Alternative Explanation</div>
+    <div class="rem-title" id="rem-title">—</div>
+    <div class="rem-explain" id="rem-explain"></div>
+    <div class="rem-story-card">
+      <div class="rem-story-head">📖 Another way to see it</div>
+      <div class="rem-story-body" id="rem-story"></div>
+    </div>
+    <div class="rem-bridge-title">Practice — simpler questions to build up</div>
+    <div id="rem-questions"></div>
+    <button class="btn-back-main" id="btn-back-from-rem" onclick="returnFromRemedial()">← Back to Questions</button>
+  </div>
+</div>
+
+<!-- ═════ CONCEPT DONE ══════════════════════════════════════════════ -->
+<div id="screen-concept-done" class="screen">
+  <div class="done-card">
+    <div class="done-icon-big" id="done-icon">🎯</div>
+    <div class="done-h2" id="done-h2">Concept Done!</div>
+    <div class="done-desc" id="done-desc"></div>
+    <div class="done-chip" id="done-chip"></div>
+    <div class="done-stats-row" id="done-stats"></div>
+    <div class="done-btns" id="done-btns"></div>
+  </div>
+</div>
+
+<!-- ═════ SUMMARY ═══════════════════════════════════════════════════ -->
+<div id="screen-summary" class="screen">
+  <div class="sum-hdr">
+    <h1>📊 Session Summary</h1>
+    <p>Your progress and Merge Team session payload</p>
+  </div>
+  <div class="sum-body">
+    <div class="sum-card">
+      <h3>Session Metrics</h3>
+      <div class="stat-grid" id="sum-metrics"></div>
+    </div>
+    <div class="sum-card">
+      <h3>Topic Mastery</h3>
+      <div id="sum-mastery"></div>
+    </div>
+    <div class="sum-card sum-full">
+      <h3>📤 Merge Team Payload (JSON)</h3>
+      <div class="payload-pre" id="payload-pre"></div>
+      <div class="sum-btn-row">
+        <button class="btn-copy" onclick="copyPayload(this)">📋 Copy JSON</button>
+        <button class="btn-next-concept" style="width:auto;padding:10px 24px" onclick="goToDashboard()">← Back to Chapter</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════════════════════════
+let LM = null;          // learner model
+let sessionStart = 0;
+let expandedSubtopics = new Set();
+const CONTENT_STATS = {
+  subtopics: CHAPTER.subtopics.length,
+  concepts: CHAPTER.subtopics.reduce((sum, st) => sum + st.concepts.length, 0),
+  questions: CHAPTER.subtopics.reduce((sum, st) => (
+    sum + st.concepts.reduce((inner, con) => inner + con.questions.length, 0)
+  ), 0),
+};
+CONTENT_STATS.hints = CONTENT_STATS.questions * 3;
+
+const CONCEPT_KC_MAP = {
+  c1_1: 'KC_SQ',
+  c1_2: 'KC_SQ',
+  c1_3: 'KC_SQ',
+  c1_4: 'KC_SQ',
+  c2_1: 'KC_SR',
+  c2_2: 'KC_SR',
+  c2_3: 'KC_PF_SQ',
+  c2_4: 'KC_LD',
+  c3_1: 'KC_APP',
+  c3_2: 'KC_APP',
+  c3_3: 'KC_APP',
+  c4_1: 'KC_CB',
+  c4_2: 'KC_CB',
+  c4_3: 'KC_CB',
+  c5_1: 'KC_CR',
+  c5_2: 'KC_PF_CB',
+  c5_3: 'KC_CR',
+  c6_1: 'KC_APP',
+  c6_2: 'KC_APP',
+  c6_3: 'KC_APP',
+};
+
+// current learn/question context
+let ctx = {
+  stIdx: 0, cIdx: 0, qIdx: 0,
+  step: 'explain',        // explain | story | worked | questions
+  attempts: 0, hintsUsed: 0, hintLevel: 0,
+  attemptedQ: false, score: 1.0, confGiven: false,
+  lastAnswer: '',
+  questionStart: 0,
+  questionResolved: false,
+  frustrationScaffoldUsed: false,
+  usedRemedial: false,
+  inlineCheck: null,
+  remedialMode: false,
+  remedialQIdx: 0, remedialCorrect: 0
+};
+
+// ─── BKT ──────────────────────────────────────────────────────
+const BKT_PARAMS = {
+  KC_SQ:    { L0:0.20, T:0.30, G:0.10, S:0.08 },
+  KC_SR:    { L0:0.15, T:0.25, G:0.15, S:0.12 },
+  KC_PF_SQ: { L0:0.10, T:0.20, G:0.10, S:0.10 },
+  KC_LD:    { L0:0.10, T:0.18, G:0.08, S:0.12 },
+  KC_APP:   { L0:0.20, T:0.22, G:0.12, S:0.10 },
+  KC_CB:    { L0:0.25, T:0.28, G:0.10, S:0.08 },
+  KC_CR:    { L0:0.15, T:0.22, G:0.12, S:0.10 },
+  KC_PF_CB: { L0:0.10, T:0.20, G:0.10, S:0.12 },
+  KC_DEC:   { L0:0.20, T:0.20, G:0.15, S:0.15 },
+};
+
+function getConceptKC(con) {
+  return con?.kc || CONCEPT_KC_MAP[con?.id] || 'KC_APP';
+}
+
+function getQuestionKC(q, con) {
+  return q?.kc || getConceptKC(con);
+}
+
+function buildConceptProgress() {
+  const progress = {};
+  CHAPTER.subtopics.forEach(st => {
+    st.concepts.forEach(con => {
+      progress[con.id] = {
+        solvedIds: {},
+        solved: 0,
+        total: con.questions.length,
+        completed: false
+      };
+    });
+  });
+  return progress;
+}
+
+function getConceptProgress(con) {
+  return LM?.concept_progress?.[con.id] || {
+    solvedIds: {},
+    solved: 0,
+    total: con.questions.length,
+    completed: false
+  };
+}
+
+function conceptCompletionRatio(con) {
+  const progress = getConceptProgress(con);
+  return progress.total > 0 ? progress.solved / progress.total : 0;
+}
+
+function countCompletedConcepts(stIdx) {
+  return CHAPTER.subtopics[stIdx].concepts.filter(con => getConceptProgress(con).completed).length;
+}
+
+function recordConceptQuestionSolved() {
+  const con = CHAPTER.subtopics[ctx.stIdx].concepts[ctx.cIdx];
+  const q = con.questions[ctx.qIdx];
+  const progress = getConceptProgress(con);
+  if (!progress.solvedIds[q.id]) {
+    progress.solvedIds[q.id] = true;
+    progress.solved++;
+  }
+  if (progress.solved >= progress.total) {
+    progress.completed = true;
+    LM.concepts_cleared.add(con.id);
+  }
+}
+
+function syncContentLabels() {
+  document.getElementById('entry-subtopics-count').textContent = `${CONTENT_STATS.subtopics} Subtopics`;
+  document.getElementById('entry-concepts-count').textContent = `${CONTENT_STATS.concepts} Concepts`;
+  document.getElementById('dash-chapter-sub').textContent =
+    `CBSE Grade 8 · ${CONTENT_STATS.subtopics} Subtopics · ${CONTENT_STATS.concepts} Concepts · ${CONTENT_STATS.questions} Questions`;
+}
+
+function initLM(name) {
+  // session_id from name only (as requested)
+  const sid = name.toLowerCase().replace(/\s+/g, '_')
+    + '_' + Date.now().toString().slice(-8);
+  LM = {
+    student_id: sid, student_name: name,
+    session_id: 'sess_' + sid,
+    chapter_id: 'grade8_squares_and_cube_roots',
+    session_start_utc: new Date().toISOString(),
+    kc: {},
+    subtopic_done: Array(CHAPTER.subtopics.length).fill(0),
+    subtopic_correct: Array(CHAPTER.subtopics.length).fill(0),
+    concept_progress: buildConceptProgress(),
+    concepts_cleared: new Set(),
+    misconceptions: { sq_times2:false, pairing_triplet:false, neg_cube_pos:false, dual_root_missing:false },
+    conf_log: [],
+    question_history: [],
+    diagnostic_flags: {
+      misconception: null,
+      status: 'normal',
+      last_remedial_score: null,
+      accidental_success: false,
+      frustration: false,
+      fast_track_events: 0
+    },
+    scaffolding_log: {
+      current_scaffold_level: 'none',
+      fading_ready: false,
+      history: []
+    },
+    timing: {
+      total_item_seconds: 0,
+      resolved_items: 0,
+      average_item_seconds: 0
+    },
+    metrics: {
+      correct:0, wrong:0, attempted:0, total:CONTENT_STATS.questions,
+      partial:0, verification_checks:0,
+      retries:0, hints:0, total_hints:CONTENT_STATS.hints,
+      time:0, completion:0
+    }
+  };
+  // init BKT per KC
+  Object.entries(BKT_PARAMS).forEach(([kc, p]) => {
+    LM.kc[kc] = { mastery: p.L0, T:p.T, G:p.G, S:p.S, stability:0, attempts:0, correct:0 };
+  });
+}
+
+function bktUpdate(kc, correct) {
+  const s = LM.kc[kc]; if (!s) return;
+  s.attempts++;
+  const { T, G, S } = s;
+  if (correct) {
+    s.correct++;
+    const pC = s.mastery * (1-S) + (1-s.mastery) * G;
+    const pLn = (s.mastery * (1-S)) / pC;
+    s.mastery = Math.min(0.999, pLn + (1-pLn)*T);
+    s.stability++;
+  } else {
+    const pW = s.mastery * S + (1-s.mastery) * (1-G);
+    const pLn = (s.mastery * S) / pW;
+    s.mastery = Math.min(0.999, pLn + (1-pLn)*T);
+    s.stability = 0;
+  }
+  s.mastery = Math.max(0.001, s.mastery);
+}
+
+function mastery(kc) { return LM?.kc[kc]?.mastery || 0; }
+
+function kcAccuracy(kc) {
+  const state = LM?.kc?.[kc];
+  return state?.attempts ? state.correct / state.attempts : 0;
+}
+
+function getCurrentElapsedSeconds() {
+  return Math.max(1, Math.round((Date.now() - ctx.questionStart) / 1000));
+}
+
+function getAverageQuestionTime() {
+  return LM?.timing?.resolved_items ? LM.timing.average_item_seconds : 20;
+}
+
+function logScaffold(level, reason) {
+  LM.scaffolding_log.current_scaffold_level = level;
+  LM.scaffolding_log.fading_ready = level === 'gray-box';
+  LM.scaffolding_log.history.push({
+    level,
+    reason,
+    qid: getCurrentQuestion().id,
+    timestamp: new Date().toISOString()
+  });
+}
+
+function finalizeCurrentQuestion(outcome, details = {}) {
+  if (ctx.questionResolved) return;
+  ctx.questionResolved = true;
+  const q = getCurrentQuestion();
+  const kc = details.kc || getCurrentKC();
+  const elapsed = getCurrentElapsedSeconds();
+  LM.timing.total_item_seconds += elapsed;
+  LM.timing.resolved_items += 1;
+  LM.timing.average_item_seconds = LM.timing.total_item_seconds / LM.timing.resolved_items;
+  LM.question_history.push({
+    qid: q.id,
+    kc,
+    outcome,
+    elapsed_seconds: elapsed,
+    attempts: ctx.attempts,
+    hints_used: ctx.hintsUsed,
+    remedial_used: ctx.usedRemedial,
+    scaffold_level: LM.scaffolding_log.current_scaffold_level
+  });
+}
+
+function getCurrentConcept() {
+  return CHAPTER.subtopics[ctx.stIdx].concepts[ctx.cIdx];
+}
+
+function getCurrentQuestion() {
+  return getCurrentConcept().questions[ctx.qIdx];
+}
+
+function getCurrentKC() {
+  return getQuestionKC(getCurrentQuestion(), getCurrentConcept());
+}
+
+// ─── UNLOCK ───────────────────────────────────────────────────
+function isUnlocked(idx) {
+  const cond = CHAPTER.subtopics[idx].unlockCondition;
+  if (!cond) return true;
+  const score = subtopicScore(cond.subtopic);
+  return score >= cond.minScore;
+}
+
+function subtopicScore(idx) {
+  const totalConcepts = CHAPTER.subtopics[idx].concepts.length;
+  return totalConcepts > 0 ? countCompletedConcepts(idx) / totalConcepts : 0;
+}
+
+function updateCompletion() {
+  LM.metrics.completion = Math.min(1, LM.metrics.attempted / LM.metrics.total);
+}
+
+// ─── SCREENS ──────────────────────────────────────────────────
+function show(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById('screen-' + id).classList.add('active');
+}
+
+// ─── SPLASH ───────────────────────────────────────────────────
+setTimeout(() => {
+  syncContentLabels();
+  show('entry');
+  document.getElementById('name-input').focus();
+}, 2000);
+document.addEventListener('keydown', e => {
+  if (e.key === 'Enter') {
+    const active = document.querySelector('.screen.active');
+    if (active?.id === 'screen-entry') startSession();
+    else if (active?.id === 'screen-question') {
+      const btn = document.getElementById('btn-check');
+      if (btn && !btn.disabled) {
+        submitAnswer();
+      } else {
+        const nextBtn = document.querySelector('#q-extra-action .btn-next');
+        if (nextBtn) nextBtn.click();
+      }
+    }
+  }
+});
+
+// ─── SESSION START ─────────────────────────────────────────────
+function startSession() {
+  const name = document.getElementById('name-input').value.trim();
+  if (!name) {
+    document.getElementById('name-input').style.borderColor = 'var(--red)';
+    return;
+  }
+  initLM(name);
+  sessionStart = Date.now();
+  document.getElementById('hdr-avatar').textContent = name[0].toUpperCase();
+  document.getElementById('hdr-name').textContent = name;
+  renderDashboard();
+  show('dashboard');
+}
+
+// ─── DASHBOARD ────────────────────────────────────────────────
+function renderDashboard() {
+  const list = document.getElementById('subtopics-list');
+  list.innerHTML = '';
+  CHAPTER.subtopics.forEach((st, i) => {
+    const unlocked = isUnlocked(i);
+    const score = subtopicScore(i);
+    const completedConcepts = countCompletedConcepts(i);
+    const pct = Math.round(score * 100);
+    const expanded = expandedSubtopics.has(i);
+    const iconClass = pct === 100 ? 'done-i' : unlocked ? 'open-i' : 'locked-i';
+    const chipStatus = pct === 100
+      ? '<span class="chip chip-done">✅ Completed</span>'
+      : completedConcepts > 0
+        ? '<span class="chip chip-open">▶ Continue</span>'
+        : unlocked
+          ? '<span class="chip chip-open">▶ Start</span>'
+          : '<span class="chip chip-locked">🔒 Locked</span>';
+    const diffChip = `<span class="chip chip-${st.diffLabel.toLowerCase()}">${st.diffLabel}</span>`;
+    const conceptsHtml = st.concepts.map((con, cIdx) => {
+      const progress = getConceptProgress(con);
+      const conceptPct = Math.round(conceptCompletionRatio(con) * 100);
+      const fill = conceptPct === 100 ? 'var(--green)' : conceptPct > 0 ? 'var(--primary-mid)' : 'var(--border2)';
+      const status = conceptPct === 100 ? 'Completed' : conceptPct > 0 ? 'In Progress' : 'Not Started';
+      return `<div class="concept-item ${progress.completed ? 'done' : ''} ${unlocked ? 'clickable' : ''}" ${unlocked ? `onclick="openConcept(${i}, ${cIdx})"` : ''}>
+        <div class="concept-head">
+          <div class="concept-item-title">${cIdx + 1}. ${con.title}</div>
+          <div class="concept-pct">${conceptPct}%</div>
+        </div>
+        <div class="concept-meta">${status} · ${progress.solved}/${progress.total} questions completed</div>
+        <div class="concept-prog"><div class="concept-prog-fill" style="width:${conceptPct}%;background:${fill}"></div></div>
+      </div>`;
+    }).join('');
+    const div = document.createElement('div');
+    div.className = `st-card ${unlocked ? 'unlocked' : 'locked'} ${pct === 100 ? 'completed' : ''}`;
+    div.innerHTML = `
+      <div class="st-main">
+        <div class="st-icon ${iconClass}">${st.icon}</div>
+        <div class="st-body">
+          <div class="st-title">${i+1}. ${st.title}</div>
+          <div class="st-row">${diffChip}${chipStatus}
+            <span style="font-size:0.75rem;color:var(--text-muted)">${completedConcepts}/${st.concepts.length} concepts completed</span>
+          </div>
+          <div class="st-prog"><div class="st-prog-fill" style="width:${pct}%;background:${pct === 100 ? 'var(--green)' : 'var(--primary-mid)'}"></div></div>
+        </div>
+        <div class="st-right">
+          <div class="st-percent">${pct}%</div>
+          <button class="st-toggle ${expanded ? 'open' : ''}" onclick="toggleSubtopic(event, ${i})">${expanded ? '▾' : '▸'}</button>
+          ${!unlocked ? '<div style="font-size:1.1rem">🔒</div>' : ''}
+        </div>
+      </div>
+      <div class="st-concepts ${expanded ? 'open' : ''}">${conceptsHtml}</div>`;
+    if (unlocked) {
+      div.querySelector('.st-main').addEventListener('click', () => openSubtopic(i));
+    }
+    list.appendChild(div);
+  });
+
+  // mastery sidebar — one row per subtopic
+  document.getElementById('mastery-sidebar').innerHTML = CHAPTER.subtopics.map((st, i) => {
+    const pct = Math.round(subtopicScore(i) * 100);
+    const col = pct >= 90 ? 'var(--green)' : pct >= 60 ? 'var(--primary-mid)' : 'var(--accent)';
+    return `<div class="mastery-row">
+      <div class="mastery-label">${st.title.length > 14 ? st.title.slice(0,12) + '…' : st.title}</div>
+      <div class="mastery-bar"><div class="mastery-fill" style="width:${pct}%;background:${col}"></div></div>
+      <div class="mastery-pct">${pct}%</div>
+    </div>`;
+  }).join('');
+
+  // stats
+  const m = LM.metrics;
+  document.getElementById('stats-sidebar').innerHTML = [
+    [m.correct, 'Correct Attempts'],
+    [m.wrong, 'Incorrect Attempts'],
+    [m.hints, 'Hints Used'],
+    [Math.round(m.completion * 100) + '%', 'Completed'],
+  ].map(([v, l]) => `<div class="stat-box"><div class="stat-val">${v}</div><div class="stat-lbl">${l}</div></div>`).join('');
+}
+
+function toggleSubtopic(event, stIdx) {
+  event.stopPropagation();
+  if (expandedSubtopics.has(stIdx)) expandedSubtopics.delete(stIdx);
+  else expandedSubtopics.add(stIdx);
+  renderDashboard();
+}
+
+function goToDashboard() {
+  LM.metrics.time = Math.round((Date.now() - sessionStart) / 1000);
+  renderDashboard();
+  show('dashboard');
+}
+
+// ─── LEARN SCREEN ─────────────────────────────────────────────
+function openSubtopic(stIdx) {
+  openConcept(stIdx, 0);
+}
+
+function openConcept(stIdx, cIdx) {
+  ctx.stIdx = stIdx; ctx.cIdx = cIdx; ctx.step = 'explain';
+  const st = CHAPTER.subtopics[stIdx];
+  const con = st.concepts[cIdx];
+  document.getElementById('learn-breadcrumb').innerHTML =
+    `<strong>${st.title}</strong> · ${con.title}`;
+  renderStepper(cIdx, 'explain');
+  renderLearnPanel('explain', con);
+  show('learn');
+}
+
+function renderStepper(cIdx, activeStep) {
+  const steps = [
+    { id: 'explain', label: 'Explanation' },
+    { id: 'story',   label: 'Story' },
+    { id: 'worked',  label: 'Example' },
+    { id: 'questions', label: 'Practice' },
+  ];
+  const stepOrder = steps.map(s => s.id);
+  const activeIdx = stepOrder.indexOf(activeStep);
+  document.getElementById('stepper').innerHTML = steps.map((s, i) => {
+    const isDone = i < activeIdx;
+    const isActive = s.id === activeStep;
+    const cls = isDone ? 'done-step' : isActive ? 'active' : '';
+    const numContent = isDone ? '✓' : i + 1;
+    return `<button class="step-btn ${cls}" onclick="switchStep('${s.id}')">
+      <span class="step-num">${numContent}</span>${s.label}
+    </button>${i < steps.length - 1 ? '<span class="step-sep">›</span>' : ''}`;
+  }).join('');
+}
+
+function switchStep(step) {
+  ctx.step = step;
+  const con = CHAPTER.subtopics[ctx.stIdx].concepts[ctx.cIdx];
+  renderStepper(ctx.cIdx, step);
+  renderLearnPanel(step, con);
+  window.scrollTo(0, 0);
+}
+
+function renderLearnPanel(step, con) {
+  const body = document.getElementById('learn-body');
+  if (step === 'explain') {
+    body.innerHTML = `
+      <div class="panel active">
+        <div class="concept-title">${con.title}</div>
+        <div class="explain-text">${con.explanation}</div>
+        <div class="key-box"><strong>💡 Key Idea: </strong>${con.keyIdea}</div>
+        <button class="btn-continue" onclick="switchStep('story')">Continue →</button>
+      </div>`;
+  } else if (step === 'story') {
+    body.innerHTML = `
+      <div class="panel active">
+        <div class="concept-title">${con.title}</div>
+        <div class="story-card">
+          <div class="story-head"><span class="story-emoji">📖</span><span class="story-head-text">Real World Connection</span></div>
+          <div class="story-body">${con.story}</div>
+        </div>
+        <button class="btn-continue" onclick="switchStep('worked')">Continue →</button>
+      </div>`;
+  } else if (step === 'worked') {
+    const lines = con.workedSteps.map(l => {
+      if (l === '') return '<div class="worked-line"> </div>';
+      if (l.startsWith('─')) return `<div class="worked-line sep">${l}</div>`;
+      if (l.startsWith('Answer') || l.startsWith('∛') || l.startsWith('√')) return `<div class="worked-line hl">${l}</div>`;
+      return `<div class="worked-line">${l}</div>`;
+    }).join('');
+    body.innerHTML = `
+      <div class="panel active">
+        <div class="concept-title">${con.title}</div>
+        <div class="worked-card">
+          <div class="worked-head">✏️ Worked Example — Study this carefully</div>
+          <div class="worked-body">${lines}</div>
+        </div>
+        <button class="btn-practice" onclick="startConceptQuestions(${ctx.stIdx}, ${ctx.cIdx})">Start Practice Questions →</button>
+      </div>`;
+  } else if (step === 'questions') {
+    body.innerHTML = `
+      <div class="panel active">
+        <div class="concept-title">${con.title}</div>
+        <div class="key-box"><strong>🎯 Practice Focus: </strong>${con.questions.length} adaptive questions, 3 graduated hints each, and remedial support if you get stuck.</div>
+        <button class="btn-practice" onclick="startConceptQuestions(${ctx.stIdx}, ${ctx.cIdx})">Start Practice Questions →</button>
+      </div>`;
+  }
+}
+
+// ─── QUESTION ENGINE ──────────────────────────────────────────
+function startConceptQuestions(stIdx, cIdx) {
+  ctx.stIdx = stIdx; ctx.cIdx = cIdx; ctx.qIdx = 0;
+  ctx.attempts = 0; ctx.hintsUsed = 0; ctx.hintLevel = 0;
+  ctx.attemptedQ = false; ctx.score = 1.0; ctx.confGiven = false; ctx.lastAnswer = '';
+  ctx.questionStart = Date.now(); ctx.questionResolved = false; ctx.frustrationScaffoldUsed = false; ctx.usedRemedial = false; ctx.inlineCheck = null;
+  loadQuestion();
+  show('question');
+}
+
+function loadQuestion() {
+  const st = CHAPTER.subtopics[ctx.stIdx];
+  const con = st.concepts[ctx.cIdx];
+  const q = con.questions[ctx.qIdx];
+  const kc = getQuestionKC(q, con);
+  // reset state for new question
+  ctx.attempts = 0; ctx.hintsUsed = 0; ctx.hintLevel = 0;
+  ctx.attemptedQ = false; ctx.score = 1.0; ctx.confGiven = false; ctx.lastAnswer = '';
+  ctx.questionStart = Date.now(); ctx.questionResolved = false; ctx.frustrationScaffoldUsed = false; ctx.usedRemedial = false; ctx.inlineCheck = null;
+
+  // header
+  document.getElementById('q-hdr-label').textContent = `Q${ctx.qIdx+1} of ${con.questions.length}`;
+  document.getElementById('q-hdr-score').textContent = `Score: ${LM.metrics.correct}`;
+  document.getElementById('q-concept-label').textContent = con.title;
+  document.getElementById('q-prog-fill').style.width = (ctx.qIdx / con.questions.length * 100) + '%';
+
+  // question details
+  document.getElementById('q-num-label').textContent = `Q${ctx.qIdx + 1}`;
+  const lvlClass = q.level === 1 ? 'l1' : q.level === 2 ? 'l2' : 'l3';
+  const lvlText = q.level === 1 ? 'Level 1 — Basic' : q.level === 2 ? 'Level 2 — Intermediate' : 'Level 3 — Application';
+  document.getElementById('q-level-pip').className = `level-pip ${lvlClass}`;
+  document.getElementById('q-level-label').className = `level-label ${lvlClass}`;
+  document.getElementById('q-level-label').textContent = lvlText;
+  document.getElementById('q-text').textContent = q.text;
+
+  // reset UI
+  const inp = document.getElementById('q-input');
+  inp.value = ''; inp.className = 'q-input'; inp.disabled = false;
+  document.getElementById('btn-check').disabled = false;
+  document.getElementById('q-feedback').className = 'feedback';
+  document.getElementById('q-feedback').textContent = '';
+  document.getElementById('q-extra-action').innerHTML = '';
+  document.getElementById('hint-reveal').className = 'hint-reveal';
+  document.getElementById('btn-hint').style.display = 'inline-flex';
+  document.getElementById('btn-hint').textContent = '💡 Need a hint?';
+  document.getElementById('q-card').className = 'q-card';
+  for (let i = 1; i <= 4; i++) {
+    document.getElementById('d'+i).className = 'attempt-dot';
+  }
+  updateMasteryDisplay(kc);
+  inp.focus();
+}
+
+function updateMasteryDisplay(kc) {
+  const pct = Math.round(mastery(kc) * 100);
+  // friendly label instead of KC_XX code
+  const labels = {
+    KC_SQ:'Squares Mastery', KC_SR:'Square Roots Mastery', KC_PF_SQ:'Prime Factorisation Mastery',
+    KC_LD:'Long Division Mastery', KC_APP:'Applications Mastery',
+    KC_CB:'Cubes Mastery', KC_CR:'Cube Roots Mastery', KC_PF_CB:'Cube Root (PF) Mastery', KC_DEC:'Fractions Mastery'
+  };
+  document.getElementById('md-label').textContent = labels[kc] || 'Mastery';
+  document.getElementById('md-pct').textContent = pct + '%';
+  const fill = document.getElementById('md-fill');
+  fill.style.width = pct + '%';
+  fill.style.background = pct >= 90 ? 'var(--green)' : pct >= 60 ? 'var(--primary-mid)' : 'var(--accent)';
+}
+
+const EXPECTED_ANSWER_CACHE = {};
+
+function escapeHTML(value) {
+  return String(value)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+function normalizeAnswerText(answer = '') {
+  return answer.trim().toLowerCase().replace(/[−–]/g, '-');
+}
+
+function parseNumericAnswer(answer = '') {
+  const normalized = normalizeAnswerText(answer).replace(/,/g, '');
+  return /^-?\d+(?:\.\d+)?$/.test(normalized) ? Number(normalized) : null;
+}
+
+function extractNumbers(text) {
+  return (text.match(/-?\d+(?:\.\d+)?/g) || []).map(Number);
+}
+
+function isPerfectSquare(n) {
+  if (!Number.isInteger(n) || n < 0) return false;
+  return Number.isInteger(Math.sqrt(n));
+}
+
+function isPerfectCube(n) {
+  if (!Number.isInteger(n)) return false;
+  const root = Math.round(Math.cbrt(n));
+  return root ** 3 === n;
+}
+
+function inferExpectedAnswer(q) {
+  if (Object.prototype.hasOwnProperty.call(EXPECTED_ANSWER_CACHE, q.id)) {
+    return EXPECTED_ANSWER_CACHE[q.id];
+  }
+
+  const booleanCandidates = ['yes', 'no', 'true', 'false'];
+  for (const candidate of booleanCandidates) {
+    if (q.check(candidate)) {
+      EXPECTED_ANSWER_CACHE[q.id] = { kind: 'boolean', value: candidate };
+      return EXPECTED_ANSWER_CACHE[q.id];
+    }
+  }
+
+  for (let value = -10000; value <= 10000; value++) {
+    if (q.check(String(value))) {
+      EXPECTED_ANSWER_CACHE[q.id] = { kind: 'number', value };
+      return EXPECTED_ANSWER_CACHE[q.id];
+    }
+  }
+
+  for (let tenths = -500; tenths <= 500; tenths++) {
+    const candidate = (tenths / 10).toFixed(1).replace(/\.0$/, '');
+    if (q.check(candidate)) {
+      EXPECTED_ANSWER_CACHE[q.id] = { kind: 'number', value: Number(candidate) };
+      return EXPECTED_ANSWER_CACHE[q.id];
+    }
+  }
+
+  for (let num = -40; num <= 40; num++) {
+    for (let den = 1; den <= 40; den++) {
+      const candidate = `${num}/${den}`;
+      if (q.check(candidate)) {
+        EXPECTED_ANSWER_CACHE[q.id] = { kind: 'fraction', value: candidate };
+        return EXPECTED_ANSWER_CACHE[q.id];
+      }
+    }
+  }
+
+  EXPECTED_ANSWER_CACHE[q.id] = null;
+  return null;
+}
+
+function detectRootContext(text) {
+  if (/∛/.test(text) || /cube root/i.test(text) || /cube-shaped|cubical|small cubes|volume of|edge length/i.test(text)) {
+    return 'cube';
+  }
+  if (/√/.test(text) || /square root/i.test(text) || /square arrangement|square park|square field|square garden|square tile|square room|square plot|perfectly square/i.test(text)) {
+    return 'square';
+  }
+  return null;
+}
+
+function extractRootBase(q, rootType) {
+  const text = q.text;
+  if (rootType === 'square') {
+    const fraction = text.match(/√\((\d+)\/(\d+)\)/);
+    if (fraction) return { type: 'fraction', numerator: Number(fraction[1]), denominator: Number(fraction[2]) };
+    const direct = text.match(/√(\d+(?:\.\d+)?)/);
+    if (direct) return { type: 'number', value: Number(direct[1]) };
+    const words = text.match(/square root of (\d+(?:\.\d+)?)/i);
+    if (words) return { type: 'number', value: Number(words[1]) };
+  }
+  if (rootType === 'cube') {
+    const fraction = text.match(/∛\((\d+)\/(\d+)\)/);
+    if (fraction) return { type: 'fraction', numerator: Number(fraction[1]), denominator: Number(fraction[2]) };
+    const direct = text.match(/∛\(?(-?\d+(?:\.\d+)?)\)?/);
+    if (direct) return { type: 'number', value: Number(direct[1]) };
+    const words = text.match(/cube root of (\d+(?:\.\d+)?)/i);
+    if (words) return { type: 'number', value: Number(words[1]) };
+  }
+  return null;
+}
+
+function extractListNumbers(text) {
+  const source = text.includes(':') ? text.split(':')[1].split('(')[0] : text;
+  return (source.match(/-?\d+/g) || []).map(Number);
+}
+
+function buildSelectionHint(q, userAnswer) {
+  const text = q.text;
+  const userNumbers = (normalizeAnswerText(userAnswer).match(/-?\d+/g) || []).map(Number);
+  if (!userNumbers.length) return '';
+
+  if (/perfect squares\?/i.test(text) && /write all/i.test(text)) {
+    const options = extractListNumbers(text);
+    const valid = options.filter(isPerfectSquare);
+    const wrongPick = userNumbers.find(value => !valid.includes(value));
+    if (wrongPick !== undefined) {
+      const low = Math.floor(Math.sqrt(wrongPick));
+      const high = Math.ceil(Math.sqrt(wrongPick));
+      return `${wrongPick} should not be in your list. It lies between ${low}² and ${high}², so it is not a perfect square.`;
+    }
+    const missing = valid.find(value => !userNumbers.includes(value));
+    if (missing !== undefined) {
+      return `${missing} belongs in the answer because ${Math.sqrt(missing)}² = ${missing}.`;
+    }
+  }
+
+  if (/cannot be perfect squares/i.test(text)) {
+    const options = extractListNumbers(text);
+    const invalid = options.filter(value => ![0, 1, 4, 5, 6, 9].includes(Math.abs(value) % 10));
+    const wrongPick = userNumbers.find(value => !invalid.includes(value));
+    if (wrongPick !== undefined) {
+      return `${wrongPick} can still be a perfect square candidate from its last digit. Focus on numbers ending in 2, 3, 7, or 8.`;
+    }
+    const missing = invalid.find(value => !userNumbers.includes(value));
+    if (missing !== undefined) {
+      return `${missing} must be included because squares never end in ${Math.abs(missing) % 10}.`;
+    }
+  }
+
+  if (/perfect cubes/i.test(text) && /write all/i.test(text)) {
+    const options = extractListNumbers(text);
+    const valid = options.filter(isPerfectCube);
+    const wrongPick = userNumbers.find(value => !valid.includes(value));
+    if (wrongPick !== undefined) {
+      return `${wrongPick} should not be in your list. Check it against the small cube table before including it.`;
+    }
+    const missing = valid.find(value => !userNumbers.includes(value));
+    if (missing !== undefined) {
+      const root = Math.round(Math.cbrt(missing));
+      return `${missing} belongs in the answer because ${root}³ = ${missing}.`;
+    }
+  }
+
+  if (/increasing order/i.test(text) && /√/.test(text)) {
+    const values = [...text.matchAll(/√(\d+)/g)].map(match => Number(match[1]));
+    if (values.length) {
+      const sorted = [...values].sort((a, b) => a - b);
+      return `For square roots, compare the numbers inside the roots first. They should be ordered as ${sorted.join(', ')} before applying √.`;
+    }
+  }
+
+  return '';
+}
+
+function buildBooleanHint(q, userAnswer) {
+  const normalized = normalizeAnswerText(userAnswer);
+  if (!/^(yes|no|true|false)$/.test(normalized)) return '';
+
+  if (/10000 is a perfect square/i.test(q.text)) {
+    return 'Count the trailing zeros. 10000 has 4 zeros, and 4 is even, so it can be a perfect square.';
+  }
+  if (/Is 30 a perfect square/i.test(q.text)) {
+    return 'Check the nearby squares: 5² = 25 and 6² = 36. Since 30 lies between them, it is not a perfect square.';
+  }
+  if (/pythagorean triplet/i.test(q.text)) {
+    return 'Use the rule a² + b² = c² before deciding yes or no.';
+  }
+  if (/cube of any even number is always even/i.test(q.text)) {
+    return 'Even × even × even is still even, so cubing an even number keeps it even.';
+  }
+  if (/9261 be a perfect cube based on its last digit/i.test(q.text)) {
+    return 'A cube ending in 1 comes from a number ending in 1, so the last digit does not rule 9261 out.';
+  }
+  if (/true or false/i.test(q.text) && /perfect square/i.test(q.text)) {
+    return 'Use the last-digit rule and the trailing-zero rule before choosing true or false.';
+  }
+
+  return '';
+}
+
+function buildRootHint(q, userAnswer, expected) {
+  const numericAnswer = parseNumericAnswer(userAnswer);
+  const rootType = detectRootContext(q.text);
+  if (!rootType || numericAnswer === null) return '';
+
+  const base = extractRootBase(q, rootType);
+  const isCube = rootType === 'cube';
+  const label = isCube ? 'cube root' : 'square root';
+
+  if (base?.type === 'number') {
+    const value = base.value;
+    if (value > 1 && numericAnswer > value) {
+      return `A ${label} cannot be greater than the original number here, so ${userAnswer} is too large. Work backwards from ${value}.`;
+    }
+    if (numericAnswer === value) {
+      return `You copied the number inside the ${label}. Instead, ask which number produces ${value} when it is ${isCube ? 'cubed' : 'squared'}.`;
+    }
+    if (isCube && value < 0 && numericAnswer > 0) {
+      return 'A cube root keeps the sign of a negative number, so your answer should also be negative.';
+    }
+  }
+
+  if (base?.type === 'fraction') {
+    return `Split the ${label} across the fraction: take the root of the numerator and denominator separately.`;
+  }
+
+  if (expected?.kind === 'number' && /root|√|∛/i.test(q.text) && numericAnswer > expected.value) {
+    return `Your answer ${userAnswer} is larger than the correct root should be. Roots undo squaring or cubing, so the answer should be much smaller than the original number.`;
+  }
+
+  return '';
+}
+
+function buildFinalStepHint(q, userAnswer, expected) {
+  const numericAnswer = parseNumericAnswer(userAnswer);
+  if (numericAnswer === null || !expected || expected.kind !== 'number') return '';
+
+  if (/fencing|perimeter|go around/i.test(q.text) && expected.value % 4 === 0 && numericAnswer === expected.value / 4) {
+    return 'You found one side correctly, but fencing/perimeter means all four sides, so there is one more step.';
+  }
+
+  if (/surface area/i.test(q.text)) {
+    if (numericAnswer * 6 === expected.value) {
+      return 'You stopped at edge². For a cube, surface area = 6 × edge², so multiply by 6.';
+    }
+    if (expected.value % 6 === 0 && numericAnswer === Math.sqrt(expected.value / 6)) {
+      return 'You found the edge correctly, but the question asks for surface area, so now use 6 × edge².';
+    }
+  }
+
+  if (/difference|exceed/i.test(q.text)) {
+    return 'This question asks for the gap between two values. After finding both sides or edges, subtract the smaller from the larger.';
+  }
+
+  if (/new volume|extra metal|recast/i.test(q.text)) {
+    return 'This is a compare-the-volumes question. Find both cube volumes first, then subtract if needed.';
+  }
+
+  if (/area .* same area .* perimeter/i.test(q.text) || /same area as this hall/i.test(q.text)) {
+    return 'You need two stages here: first find the side from the area, then use that side to get the final quantity asked.';
+  }
+
+  return '';
+}
+
+function buildConceptFallback(con, userAnswer) {
+  const answer = userAnswer;
+
+  if (['c1_1', 'c2_1', 'c3_3'].includes(con.id)) {
+    return `Your answer "${answer}" should be checked against the square table. Ask which whole number squared gives the number in the question.`;
+  }
+  if (['c1_2', 'c4_2'].includes(con.id)) {
+    return `Your answer "${answer}" suggests the property test was missed. Use the last digit, parity, or trailing-zero rule before calculating.`;
+  }
+  if (con.id === 'c1_3') {
+    return `Your answer "${answer}" suggests the odd-number pattern was missed. Remember: the sum of the first n odd numbers is n².`;
+  }
+  if (con.id === 'c1_4') {
+    return `Your answer "${answer}" suggests the consecutive-square rule was missed. Use (n+1)² − n² = 2n + 1.`;
+  }
+  if (con.id === 'c2_2') {
+    return `Your answer "${answer}" suggests the repeated-subtraction steps were not tracked carefully. Keep subtracting consecutive odd numbers until you reach 0 or pass it.`;
+  }
+  if (['c2_3', 'c4_3'].includes(con.id)) {
+    return `Your answer "${answer}" suggests the prime exponents were not grouped correctly. Check which primes are missing a full pair or triplet.`;
+  }
+  if (con.id === 'c2_4') {
+    return `Your answer "${answer}" suggests the long-division process stopped early. After each digit of the root, double the quotient to form the next divisor.`;
+  }
+  if (['c3_1', 'c3_2'].includes(con.id)) {
+    return `Your answer "${answer}" should be checked against the nearest known squares before deciding.`;
+  }
+  if (con.id === 'c4_1') {
+    return `Your answer "${answer}" should be checked against the cube table. Cubes come from multiplying the same number three times.`;
+  }
+  if (['c5_1', 'c5_3', 'c6_1', 'c6_2', 'c6_3'].includes(con.id)) {
+    return `Your answer "${answer}" suggests the cube-root step and the final application step got mixed up. First find the edge from the volume, then do the extra step the question asks for.`;
+  }
+  if (con.id === 'c5_2') {
+    return `Your answer "${answer}" suggests the prime factors were not grouped in triplets. For cube roots, take one factor from each triplet.`;
+  }
+
+  return `Your answer "${answer}" suggests the main method for this concept needs to be reapplied carefully before moving to the next step.`;
+}
+
+function buildAdaptiveHint(q, con, userAnswer) {
+  if (!normalizeAnswerText(userAnswer)) return '';
+
+  const expected = inferExpectedAnswer(q);
+  return (
+    buildSelectionHint(q, userAnswer) ||
+    buildBooleanHint(q, userAnswer) ||
+    buildRootHint(q, userAnswer, expected) ||
+    buildFinalStepHint(q, userAnswer, expected) ||
+    buildConceptFallback(con, userAnswer)
+  );
+}
+
+function getReportHint(kc, q, level) {
+  if (level === 1) {
+    if (/all possible|all values/i.test(q.text)) {
+      return 'Every positive square equation can have both a positive and a negative root. Check whether the question wants all valid values.';
+    }
+    if (kc === 'KC_SR' || kc === 'KC_PF_SQ' || kc === 'KC_LD') {
+      return 'A square root is a number which, when multiplied by itself, gives the original value.';
+    }
+    if (kc === 'KC_CB' || kc === 'KC_CR' || kc === 'KC_PF_CB') {
+      return 'Think about the sign. If you multiply a negative number three times, does the result stay positive or become negative?';
+    }
+    if (kc === 'KC_DEC' || /fraction|\/\d+/.test(q.text)) {
+      return 'When a root involves a fraction, apply the operation to the numerator and denominator separately.';
+    }
+  }
+
+  if (level === 2) {
+    if (kc === 'KC_PF_SQ' || kc === 'KC_PF_CB' || /prime factor/i.test(q.text)) {
+      return 'First prime factorize the number. For square roots, make pairs. For cube roots, make groups of three.';
+    }
+    if (kc === 'KC_DEC' || /0\.\d+/.test(q.text)) {
+      return 'Try rewriting the decimal as a fraction, then find the root of the numerator and denominator separately.';
+    }
+    if ((kc === 'KC_CR' || kc === 'KC_PF_CB') && /fraction/i.test(q.text)) {
+      return 'Before finding the cube root of a large fraction, simplify the numbers inside the root if possible.';
+    }
+  }
+
+  if (level === 3) {
+    if (kc === 'KC_SR' || kc === 'KC_PF_SQ' || kc === 'KC_LD') {
+      return 'For square roots, pair equal prime factors and take one from each pair. That is the final trace the system wants you to see.';
+    }
+    if (kc === 'KC_CR' || kc === 'KC_PF_CB') {
+      return 'For cube roots, group equal prime factors in triplets and take one from each triplet.';
+    }
+    if (/bound|between two decimals|closer to/i.test(q.text)) {
+      return 'Use the nearest perfect squares around the number, then place the root between their integer roots.';
+    }
+  }
+
+  return '';
+}
+
+function buildSocraticPrompt(q, userAnswer, kc) {
+  const answer = parseNumericAnswer(userAnswer);
+  if (answer === null) return '';
+  const baseNumber = parseInt(q.text.match(/\d+/)?.[0]);
+
+  if (kc === 'KC_SQ' && baseNumber && answer === 2 * baseNumber) {
+    return `Compare ${baseNumber} + ${baseNumber} with ${baseNumber} × ${baseNumber}. Squaring is repeated multiplication, not doubling.`;
+  }
+
+  const rootType = detectRootContext(q.text);
+  const base = extractRootBase(q, rootType);
+  if (rootType === 'square' && base?.type === 'number' && answer > 0) {
+    const rough = Math.max(1, Math.floor(answer / 10) * 10);
+    if (answer >= base.value / 2) {
+      return `If ${answer} were the root, then ${answer} × ${answer} should give ${base.value}. Is ${rough} × ${rough} already much larger than ${base.value}?`;
+    }
+  }
+
+  if ((kc === 'KC_CR' || kc === 'KC_PF_CB') && /∛\(-|cube root of -|negative/i.test(q.text) && answer > 0) {
+    return 'If a negative number is multiplied three times, what sign does the result keep? Use that to check your answer.';
+  }
+
+  if (kc === 'KC_PF_CB') {
+    return 'Square roots use pairs because n² has two factors. Cube roots use triplets because n³ has three factors.';
+  }
+
+  return '';
+}
+
+function isFrustrated() {
+  const threshold = Math.max(18, Math.round(getAverageQuestionTime() * 1.5));
+  return ctx.attempts > 2 && getCurrentElapsedSeconds() > threshold;
+}
+
+function buildGrayBoxScaffold(q, con, kc) {
+  const lead = q.hint2 || q.hint1;
+  if (q.level === 3 || kc === 'KC_APP') {
+    return `Guided setup: ${lead} Finish only the last step yourself so the cognitive load is lower.`;
+  }
+  if (kc === 'KC_PF_SQ') {
+    return 'Guided setup: the prime factors are already grouped into pairs for you. Now take one from each pair and multiply.';
+  }
+  if (kc === 'KC_PF_CB') {
+    return 'Guided setup: the prime factors are already grouped into triplets for you. Now take one from each triplet and multiply.';
+  }
+  return `Guided setup: ${lead} Now complete the final computation on your own.`;
+}
+
+function renderPedBox(title, text, extra = '') {
+  return `<div class="ped-box"><div class="ped-box-title">${title}</div><div class="ped-box-text">${escapeHTML(text)}</div>${extra}</div>`;
+}
+
+function renderInlineCheck(prompt, buttonLabel = 'Check') {
+  return `
+    <div class="ped-check-row">
+      <input type="text" class="ped-check-input" id="ped-check-input" placeholder="Your answer..." />
+      <button class="btn-check" style="padding:10px 18px" onclick="submitInlineCheck()">${buttonLabel}</button>
+    </div>
+    <div class="ped-check-feedback" id="ped-check-feedback"></div>`;
+}
+
+function createPedCheckPrompt(kc, level, mode) {
+  const bank = {
+    KC_SQ: level >= 3
+      ? { text: 'Checkpoint: What is 11²?', check: a => normalizeAnswerText(a) === '121' }
+      : { text: 'Checkpoint: What is 9²?', check: a => normalizeAnswerText(a) === '81' },
+    KC_SR: level >= 3
+      ? { text: 'Checkpoint: Is 50 a perfect square? (yes/no)', check: a => /^no$/.test(normalizeAnswerText(a)) }
+      : { text: 'Checkpoint: What is √81?', check: a => normalizeAnswerText(a) === '9' },
+    KC_PF_SQ: { text: 'Checkpoint: Pair the factors to find √144.', check: a => normalizeAnswerText(a) === '12' },
+    KC_LD: { text: 'Checkpoint: What is √1600?', check: a => normalizeAnswerText(a) === '40' },
+    KC_CB: { text: 'Checkpoint: What is (−3)³?', check: a => normalizeAnswerText(a) === '-27' },
+    KC_CR: level >= 2
+      ? { text: 'Checkpoint: What is ∛(−64)?', check: a => normalizeAnswerText(a) === '-4' }
+      : { text: 'Checkpoint: What is ∛125?', check: a => normalizeAnswerText(a) === '5' },
+    KC_PF_CB: { text: 'Checkpoint: Use triplets to find ∛216.', check: a => normalizeAnswerText(a) === '6' },
+    KC_DEC: { text: 'Checkpoint: Find √(16/25).', check: a => /^4\/5$/.test(normalizeAnswerText(a).replace(/\s/g, '')) },
+    KC_APP: level >= 3
+      ? { text: 'Checkpoint: A square has area 81. What is its side length?', check: a => normalizeAnswerText(a) === '9' }
+      : { text: 'Checkpoint: A cube has volume 64. What is its edge length?', check: a => normalizeAnswerText(a) === '4' },
+  };
+  const prompt = bank[kc] || { text: 'Checkpoint: What is √49?', check: a => normalizeAnswerText(a) === '7' };
+  return {
+    ...prompt,
+    mode,
+    success: mode === 'verification'
+      ? 'Verified. Your original answer looks stable.'
+      : 'Re-entry check passed. Partial mastery recorded.',
+    fail: mode === 'verification'
+      ? 'This looks like an accidental success. Review the scaffold and try the checkpoint again.'
+      : 'Re-entry check is not correct yet. Use the refresher idea and try once more.'
+  };
+}
+
+function getChallengeTargetIndex(con) {
+  const currentLevel = con.questions[ctx.qIdx].level;
+  let bestIdx = null;
+  let bestLevel = currentLevel;
+  con.questions.forEach((question, idx) => {
+    if (idx > ctx.qIdx && question.level > bestLevel) {
+      bestIdx = idx;
+      bestLevel = question.level;
+    }
+  });
+  return bestIdx;
+}
+
+function shouldFastTrack(kc, con) {
+  return getChallengeTargetIndex(con) !== null &&
+    ctx.attempts === 1 &&
+    ctx.hintsUsed === 0 &&
+    kcAccuracy(kc) > 0.85 &&
+    LM.kc[kc].stability >= 3;
+}
+
+function awardFastTrack(con, targetIdx) {
+  const progress = getConceptProgress(con);
+  for (let i = ctx.qIdx + 1; i < targetIdx; i++) {
+    const skipped = con.questions[i];
+    if (!progress.solvedIds[skipped.id]) {
+      progress.solvedIds[skipped.id] = true;
+      progress.solved++;
+    }
+  }
+  if (progress.solved >= progress.total) {
+    progress.completed = true;
+    LM.concepts_cleared.add(con.id);
+  }
+}
+
+function fastTrackTo(targetIdx) {
+  awardFastTrack(getCurrentConcept(), targetIdx);
+  LM.diagnostic_flags.fast_track_events++;
+  LM.diagnostic_flags.status = 'fast_track';
+  ctx.qIdx = targetIdx;
+  loadQuestion();
+}
+
+function submitInlineCheck() {
+  if (!ctx.inlineCheck) return;
+  const input = document.getElementById('ped-check-input');
+  const feedback = document.getElementById('ped-check-feedback');
+  const answer = input.value.trim();
+  if (!answer) return;
+
+  const passed = ctx.inlineCheck.prompt.check(answer);
+  feedback.className = `ped-check-feedback ${passed ? 'ok' : 'bad'}`;
+  feedback.textContent = passed ? `✅ ${ctx.inlineCheck.prompt.success}` : `❌ ${ctx.inlineCheck.prompt.fail}`;
+
+  if (!passed) {
+    if (ctx.inlineCheck.type === 'verification') {
+      const q = getCurrentQuestion();
+      const con = getCurrentConcept();
+      const socratic = buildSocraticPrompt(q, answer, ctx.inlineCheck.kc) || buildGrayBoxScaffold(q, con, ctx.inlineCheck.kc);
+      document.getElementById('q-extra-action').innerHTML =
+        renderPedBox('Verification Check', ctx.inlineCheck.prompt.text, renderInlineCheck(ctx.inlineCheck.prompt, 'Verify')) +
+        renderPedBox('Verification Scaffold', socratic);
+      LM.diagnostic_flags.status = 'verification_failed';
+    }
+    return;
+  }
+
+  if (ctx.inlineCheck.type === 'verification') {
+    LM.diagnostic_flags.status = 'verified';
+    LM.diagnostic_flags.accidental_success = false;
+    renderPostCorrectAction(getCurrentConcept(), ctx.inlineCheck.kc, true);
+  } else if (ctx.inlineCheck.type === 'reentry') {
+    LM.metrics.partial++;
+    LM.subtopic_done[ctx.stIdx]++;
+    recordConceptQuestionSolved();
+    bktUpdate(ctx.inlineCheck.kc, true);
+    updateMasteryDisplay(ctx.inlineCheck.kc);
+    updateCompletion();
+    LM.diagnostic_flags.last_remedial_score = ctx.remedialCorrect / 2;
+    LM.diagnostic_flags.status = 'reentry_passed';
+    finalizeCurrentQuestion('partial_mastery', { kc: ctx.inlineCheck.kc });
+    showFeedback('fb-correct', '✅ Re-entry check passed. Partial mastery recorded.');
+    document.getElementById('q-extra-action').innerHTML =
+      '<button class="btn-next mt-12" onclick="nextQuestion()" style="display:inline-flex">Continue →</button>';
+  }
+
+  ctx.inlineCheck = null;
+}
+
+function showVerificationCheck(kc) {
+  const q = getCurrentQuestion();
+  const prompt = createPedCheckPrompt(kc, q.level, 'verification');
+  ctx.inlineCheck = { type: 'verification', prompt, kc };
+  LM.metrics.verification_checks++;
+  LM.diagnostic_flags.accidental_success = true;
+  LM.diagnostic_flags.status = 'verification_required';
+  logScaffold('verification', 'accidental_success');
+  document.getElementById('q-extra-action').innerHTML =
+    renderPedBox('Verification Check', prompt.text, renderInlineCheck(prompt, 'Verify'));
+}
+
+function showReentryCheck(kc) {
+  const q = getCurrentQuestion();
+  const prompt = createPedCheckPrompt(kc, q.level, 'reentry');
+  ctx.inlineCheck = { type: 'reentry', prompt, kc };
+  document.getElementById('q-input').disabled = true;
+  document.getElementById('btn-check').disabled = true;
+  document.getElementById('btn-hint').style.display = 'none';
+  document.getElementById('q-extra-action').innerHTML =
+    renderPedBox('Near-Transfer Re-entry', prompt.text, renderInlineCheck(prompt, 'Unlock'));
+}
+
+function renderPostCorrectAction(con, kc, verified = false) {
+  if (shouldFastTrack(kc, con)) {
+    const targetIdx = getChallengeTargetIndex(con);
+    logScaffold('fast-track', 'stability');
+    document.getElementById('q-extra-action').innerHTML =
+      `<button class="btn-next mt-12" onclick="fastTrackTo(${targetIdx})" style="display:inline-flex">Fast-Track to Challenge →</button>`;
+    showFeedback('fb-correct', `✅ ${verified ? 'Verified and stable.' : 'Full credit!'} Fast-track unlocked because you have strong stable performance.`);
+    return;
+  }
+
+  document.getElementById('q-extra-action').innerHTML =
+    '<button class="btn-next mt-12" onclick="nextQuestion()" style="display:inline-flex">Continue →</button>';
+}
+
+function detectPartialCorrect(q, answer) {
+  if (!/all possible|all values/i.test(q.text)) return null;
+  const values = (normalizeAnswerText(answer).match(/-?\d+/g) || []).map(Number);
+  if (values.length !== 1) return null;
+  if (values[0] > 0) {
+    return {
+      message: 'You found one valid root, but this question asks for all valid values. Check whether the negative root also works.',
+      misconception: 'dual_root_missing'
+    };
+  }
+  return null;
+}
+
+function getSpecialRemedialOverlay(con, kc) {
+  if ((kc === 'KC_SR' || kc === 'KC_PF_SQ' || kc === 'KC_LD') && mastery('KC_SQ') > 0.85 && kcAccuracy(kc) < 0.40) {
+    return 'Prime Factor Tree Focus: you seem to understand squares, but the root procedure is unstable. Build the factor tree first, then make pairs before extracting the root.';
+  }
+  if ((kc === 'KC_CR' || kc === 'KC_PF_CB') && mastery('KC_SR') > 0.80 && LM.misconceptions.pairing_triplet) {
+    return 'Pairs vs Triplets: square roots use pairs because n² has two equal factors. Cube roots use triplets because n³ has three equal factors. Do not transfer the pair rule to cube roots.';
+  }
+  if (LM.misconceptions.neg_cube_pos) {
+    return 'Sign Retention Focus: a cube root keeps the sign of the original number. Negative in means negative out.';
+  }
+  return '';
+}
+
+function submitAnswer() {
+  const con = CHAPTER.subtopics[ctx.stIdx].concepts[ctx.cIdx];
+  const q = con.questions[ctx.qIdx];
+  const kc = getQuestionKC(q, con);
+  const ans = document.getElementById('q-input').value.trim();
+  if (!ans) return;
+  ctx.lastAnswer = ans;
+
+  ctx.attempts++;
+  if (!ctx.attemptedQ) {
+    LM.metrics.attempted++;
+    ctx.attemptedQ = true;
+  } else {
+    LM.metrics.retries++;
+  }
+
+  // mark dot
+  const dot = document.getElementById('d' + Math.min(ctx.attempts, 4));
+  if (dot) dot.classList.add('used');
+
+  // misconception check
+  checkMisconception(q, ans, kc);
+
+  const partial = detectPartialCorrect(q, ans);
+  if (partial) {
+    LM.metrics.partial++;
+    LM.diagnostic_flags.misconception = partial.misconception;
+    showFeedback('fb-info', `🟡 ${partial.message}`);
+    revealHint(1, { auto: true });
+    return;
+  }
+
+  const correct = q.check(ans.toLowerCase());
+  bktUpdate(kc, correct);
+  updateMasteryDisplay(kc);
+
+  if (correct) handleCorrect(q, con, kc);
+  else handleWrong(q, con, kc);
+}
+
+function checkMisconception(q, ans, kc) {
+  const numeric = parseNumericAnswer(ans);
+  const expected = inferExpectedAnswer(q);
+
+  // M1: sq means ×2
+  if (kc === 'KC_SQ') {
+    const base = parseInt(q.text.match(/\d+/)?.[0]);
+    if (base && numeric === 2 * base) {
+      LM.misconceptions.sq_times2 = true;
+      LM.diagnostic_flags.misconception = 'multiply_by_two';
+    }
+  }
+
+  if (/all possible|all values/i.test(q.text) && /square/i.test(q.text) && /(^|,)\s*-?\d+\s*(,|$)/.test(ans)) {
+    const matches = (normalizeAnswerText(ans).match(/-?\d+/g) || []).map(Number);
+    if (matches.length === 1 && matches[0] > 0) {
+      LM.misconceptions.dual_root_missing = true;
+      LM.diagnostic_flags.misconception = 'dual_root_missing';
+    }
+  }
+
+  if ((kc === 'KC_CR' || kc === 'KC_PF_CB') && /∛\(-|cube root of -|negative/i.test(q.text) && numeric !== null && numeric > 0) {
+    LM.misconceptions.neg_cube_pos = true;
+    LM.diagnostic_flags.misconception = 'negative_cube_positive';
+  }
+
+  // M3: square-root pairing transferred into cube-root triplets
+  if (kc === 'KC_PF_CB' && expected?.kind === 'number' && numeric !== null) {
+    const candidate = Math.sqrt(expected.value);
+    if (Number.isInteger(candidate) && numeric === candidate) {
+      LM.misconceptions.pairing_triplet = true;
+      LM.diagnostic_flags.misconception = 'pairing_over_triplet';
+    }
+  }
+}
+
+function handleCorrect(q, con, kc) {
+  LM.metrics.correct++;
+  LM.subtopic_done[ctx.stIdx]++;
+  LM.subtopic_correct[ctx.stIdx]++;
+  recordConceptQuestionSolved();
+  finalizeCurrentQuestion('correct', { kc });
+  // mark dot green
+  const dot = document.getElementById('d' + Math.min(ctx.attempts, 4));
+  if (dot) { dot.classList.remove('used'); dot.classList.add('success'); }
+
+  document.getElementById('q-input').className = 'q-input inp-correct';
+  document.getElementById('q-input').disabled = true;
+  document.getElementById('btn-check').disabled = true;
+  document.getElementById('q-card').className = 'q-card state-correct';
+  document.getElementById('btn-hint').style.display = 'none';
+
+  const creditMsg = ctx.score >= 1 ? 'Full credit!' :
+    ctx.score >= 0.8 ? 'Well done! (small deduction for hint)' :
+    ctx.score >= 0.55 ? 'Correct! (partial credit — hint used)' : 'Correct with guidance.';
+  showFeedback('fb-correct', `✅ ${creditMsg}`);
+  spawnSparks();
+  updateCompletion();
+
+  if (ctx.attempts === 1 && ctx.hintsUsed === 0 && mastery(kc) < 0.35) {
+    showFeedback('fb-info', '✅ Correct. This may be an accidental success, so complete one quick verification check before moving on.');
+    showVerificationCheck(kc);
+    return;
+  }
+
+  renderPostCorrectAction(con, kc);
+}
+
+function handleWrong(q, con, kc) {
+  LM.metrics.wrong++;
+  document.getElementById('q-input').className = 'q-input inp-wrong';
+  setTimeout(() => {
+    document.getElementById('q-input').className = 'q-input';
+    document.getElementById('q-input').value = '';
+    document.getElementById('q-input').focus();
+  }, 600);
+
+  if (ctx.attempts === 1) {
+    // R4 — encouragement, no hint yet
+    const socratic = buildSocraticPrompt(q, ctx.lastAnswer, kc);
+    if (socratic) {
+      showFeedback('fb-info', `🤔 ${socratic}`);
+      document.getElementById('q-extra-action').innerHTML = renderPedBox('Reflect Before Retrying', socratic);
+      logScaffold('socratic', LM.diagnostic_flags.misconception || 'reflective_prompt');
+    } else {
+      showFeedback('fb-encourage', '🤔 Not quite! Take another look and try again.');
+    }
+  } else if (ctx.attempts === 2) {
+    showFeedback('fb-wrong', '❌ Incorrect. I opened a procedural hint below to guide the next step.');
+    revealHint(2, { auto: true });
+  } else if (isFrustrated() && !ctx.frustrationScaffoldUsed) {
+    ctx.frustrationScaffoldUsed = true;
+    LM.diagnostic_flags.frustration = true;
+    LM.diagnostic_flags.status = 'gray_box_active';
+    logScaffold('gray-box', 'frustration');
+    const grayBox = buildGrayBoxScaffold(q, con, kc);
+    showFeedback('fb-info', '⏳ This one is taking longer than usual, so I reduced the setup for you.');
+    document.getElementById('q-extra-action').innerHTML = renderPedBox('Gray-Box Scaffold', grayBox);
+  } else {
+    // R6/R7 — repeated failure triggers remedial branch
+    LM.diagnostic_flags.status = 'remediation_active';
+    showFeedback('fb-info', '📖 Let\'s try a completely different explanation — click below.');
+    document.getElementById('btn-check').disabled = true;
+    document.getElementById('q-input').disabled = true;
+    document.getElementById('q-extra-action').innerHTML =
+      `<button class="btn-practice mt-12" onclick="enterRemedial()" style="display:inline-flex">🔄 Try Alternative Explanation →</button>`;
+  }
+}
+
+function showFeedback(cls, text) {
+  const fb = document.getElementById('q-feedback');
+  fb.className = `feedback show ${cls}`;
+  fb.textContent = text;
+}
+
+function revealHint(forcedLevel = null, options = {}) {
+  const nextLevel = Math.min(3, forcedLevel || (ctx.hintLevel + 1));
+  if (nextLevel <= ctx.hintLevel && !options.forceRefresh) return;
+  ctx.hintLevel = nextLevel;
+  ctx.hintsUsed++;
+  LM.metrics.hints++;
+  LM.scaffolding_log.current_scaffold_level = nextLevel === 1 ? 'concept-hint' : nextLevel === 2 ? 'procedural-hint' : 'bottom-out';
+  // credit penalty
+  ctx.score = ctx.hintLevel === 1 ? 0.85 : ctx.hintLevel === 2 ? 0.60 : 0.35;
+
+  const con = getCurrentConcept();
+  const q = getCurrentQuestion();
+  const kc = getQuestionKC(q, con);
+  const hints = [q.hint1, q.hint2, q.hint3];
+  const adaptive = buildAdaptiveHint(q, con, ctx.lastAnswer);
+  const reportHint = getReportHint(kc, q, ctx.hintLevel);
+  const levelLabels = ['Hint 1 of 3 — Concept reminder', 'Hint 2 of 3 — Method guide', 'Hint 3 of 3 — Full solution trace'];
+  const penalties = ['Max score: 85%', 'Max score: 60%', 'Max score: 35%'];
+
+  document.getElementById('hint-level-label').textContent = levelLabels[Math.min(ctx.hintLevel-1, 2)];
+  const hintBody = reportHint || hints[Math.min(ctx.hintLevel-1, 2)];
+  document.getElementById('hint-text').innerHTML = adaptive
+    ? `<strong>Based on your answer:</strong> ${escapeHTML(adaptive)}<br><br><strong>Next step:</strong> ${escapeHTML(hintBody)}`
+    : escapeHTML(hintBody);
+  document.getElementById('hint-penalty').textContent = '⚠ ' + penalties[Math.min(ctx.hintLevel-1, 2)];
+  document.getElementById('hint-reveal').className = 'hint-reveal show';
+  logScaffold(LM.scaffolding_log.current_scaffold_level, options.auto ? 'auto_hint' : 'manual_hint');
+
+  if (ctx.hintLevel >= 3) {
+    document.getElementById('btn-hint').style.display = 'none';
+  } else {
+    document.getElementById('btn-hint').textContent = '💡 Next hint (-' + [15,25][ctx.hintLevel-1] + '%)';
+  }
+}
+
+function requestHint() {
+  revealHint();
+}
+
+function nextQuestion() {
+  const con = CHAPTER.subtopics[ctx.stIdx].concepts[ctx.cIdx];
+  ctx.qIdx++;
+  if (ctx.qIdx < con.questions.length) {
+    loadQuestion();
+  } else {
+    showConceptDone();
+  }
+}
+
+// ─── REMEDIAL ─────────────────────────────────────────────────
+function enterRemedial() {
+  const con = CHAPTER.subtopics[ctx.stIdx].concepts[ctx.cIdx];
+  const rem = REMEDIAL[con.id];
+  if (!rem) { goToDashboard(); return; }
+
+  ctx.remedialMode = true;
+  ctx.usedRemedial = true;
+  ctx.remedialQIdx = 0;
+  ctx.remedialCorrect = 0;
+  logScaffold('remedial', LM.diagnostic_flags.misconception || 'repeated_failure');
+  const kc = getConceptKC(con);
+  const specialOverlay = getSpecialRemedialOverlay(con, kc);
+
+  document.getElementById('rem-title').textContent = rem.title;
+  document.getElementById('rem-explain').innerHTML = `${specialOverlay ? `<div class="key-box"><strong>Targeted Intervention: </strong>${escapeHTML(specialOverlay)}</div>` : ''}${rem.explanation.replace(/\n/g, '<br>')}`;
+  document.getElementById('rem-story').textContent = rem.story;
+
+  const qContainer = document.getElementById('rem-questions');
+  qContainer.innerHTML = rem.bridgeQuestions.map((bq, i) => `
+    <div class="rem-q" id="rem-q-${i}">
+      <div class="rem-q-text">${bq.text}</div>
+      <div class="rem-input-row">
+        <input type="text" class="rem-input" id="rem-input-${i}" placeholder="Your answer..." />
+        <button class="btn-rem-check" onclick="checkBridgeQ(${i})">Check ✓</button>
+      </div>
+      <div class="rem-feedback" id="rem-fb-${i}"></div>
+    </div>
+  `).join('');
+
+  show('remedial');
+}
+
+function checkBridgeQ(i) {
+  const con = CHAPTER.subtopics[ctx.stIdx].concepts[ctx.cIdx];
+  const rem = REMEDIAL[con.id];
+  const bq = rem.bridgeQuestions[i];
+  const ans = document.getElementById('rem-input-' + i).value.trim();
+  const fb = document.getElementById('rem-fb-' + i);
+  const correct = bq.check(ans.toLowerCase());
+  fb.className = 'rem-feedback show ' + (correct ? 'ok' : 'bad');
+  fb.textContent = correct ? '✅ Correct! ' + bq.hint : '❌ ' + bq.hint;
+  const card = document.getElementById('rem-q-' + i);
+  if (correct && card.dataset.solved !== 'true') {
+    card.dataset.solved = 'true';
+    ctx.remedialCorrect++;
+  }
+}
+
+function returnFromRemedial() {
+  if (ctx.remedialCorrect < 2) {
+    document.getElementById('btn-back-from-rem').textContent = 'Solve Both Bridge Questions First';
+    setTimeout(() => {
+      document.getElementById('btn-back-from-rem').textContent = '← Back to Questions';
+    }, 1500);
+    return;
+  }
+  ctx.remedialMode = false;
+  LM.diagnostic_flags.last_remedial_score = ctx.remedialCorrect / 2;
+  LM.diagnostic_flags.status = 'reentry_required';
+  loadQuestion();
+  ctx.usedRemedial = true;
+  show('question');
+  showFeedback('fb-info', '📘 Remedial complete. Solve this re-entry checkpoint to unlock the main stream again.');
+  showReentryCheck(getCurrentKC());
+}
+
+// ─── CONCEPT DONE ─────────────────────────────────────────────
+function showConceptDone() {
+  const st = CHAPTER.subtopics[ctx.stIdx];
+  const con = st.concepts[ctx.cIdx];
+  const m = mastery(getConceptKC(con));
+  const stScore = subtopicScore(ctx.stIdx);
+
+  let icon = '🎯', h2 = 'Concept Done!';
+  let chipCls = 'partial', chipText = 'Good Progress';
+  if (m >= 0.85) { icon = '🌟'; h2 = 'Outstanding!'; chipCls = 'mastered'; chipText = '🏆 Mastered'; }
+  else if (m >= 0.65) { icon = '✅'; h2 = 'Concept Cleared!'; chipCls = 'partial'; chipText = '📈 On Track'; }
+  else { icon = '💪'; h2 = 'Keep Practising!'; chipCls = 'needs'; chipText = '🔄 Review Recommended'; }
+
+  document.getElementById('done-icon').textContent = icon;
+  document.getElementById('done-h2').textContent = h2;
+  document.getElementById('done-desc').textContent = `You completed: ${con.title}`;
+  document.getElementById('done-chip').className = `done-chip ${chipCls}`;
+  document.getElementById('done-chip').textContent = chipText;
+  document.getElementById('done-stats').innerHTML = [
+    [LM.subtopic_correct[ctx.stIdx], 'Correct'],
+    [LM.subtopic_done[ctx.stIdx], 'Attempted'],
+    [Math.round(stScore*100)+'%', 'Subtopic Progress'],
+  ].map(([v,l]) => `<div class="done-stat"><div class="done-stat-v">${v}</div><div class="done-stat-l">${l}</div></div>`).join('');
+
+  const nextCIdx = ctx.cIdx + 1;
+  const hasNext = nextCIdx < st.concepts.length;
+  document.getElementById('done-btns').innerHTML = `
+    ${hasNext ? `<button class="btn-next-concept" onclick="openConcept(${ctx.stIdx},${nextCIdx})">Next Concept: ${st.concepts[nextCIdx].title} →</button>` : ''}
+    <button class="btn-dash" onclick="goToDashboard()">← Back to Chapter Map</button>
+  `;
+  show('concept-done');
+}
+
+// ─── SUMMARY ──────────────────────────────────────────────────
+function showSummary() {
+  LM.metrics.time = Math.round((Date.now() - sessionStart) / 1000);
+  updateCompletion();
+  const m = LM.metrics;
+  const completedPct = Math.round((LM.concepts_cleared.size / CONTENT_STATS.concepts) * 100);
+  const accuracyRolling = m.attempted ? Math.round((m.correct / m.attempted) * 100) : 0;
+  const hintFrequency = m.attempted ? Math.round((m.hints / m.attempted) * 100) : 0;
+  document.getElementById('sum-metrics').innerHTML = [
+    [m.correct, 'Correct'],
+    [m.wrong, 'Wrong'],
+    [m.partial, 'Partial Mastery'],
+    [m.attempted, 'Attempted'],
+    [m.hints, 'Hints Used'],
+    [m.verification_checks, 'Verification Checks'],
+    [accuracyRolling + '%', 'Rolling Accuracy'],
+    [hintFrequency + '%', 'Hint Frequency'],
+    [m.time + 's', 'Time Spent'],
+    [completedPct + '%', 'Percentage Completed'],
+    [Math.round(m.completion*100)+'%', 'Completion'],
+  ].map(([v,l]) => `<div class="stat-box"><div class="stat-val">${v}</div><div class="stat-lbl">${l}</div></div>`).join('');
+
+  document.getElementById('sum-mastery').innerHTML = CHAPTER.subtopics.map((st, i) => {
+    const pct = Math.round(subtopicScore(i)*100);
+    const col = pct >= 90 ? 'var(--green)' : pct >= 60 ? 'var(--primary-mid)' : 'var(--accent)';
+    return `<div class="mastery-row">
+      <div class="mastery-label" style="width:90px">${st.title.length > 14 ? st.title.slice(0,12) + '…' : st.title}</div>
+      <div class="mastery-bar"><div class="mastery-fill" style="width:${pct}%;background:${col}"></div></div>
+      <div class="mastery-pct">${pct}%</div>
+    </div>`;
+  }).join('');
+
+  const payload = {
+    student_id: LM.student_id, session_id: LM.session_id,
+    chapter_id: LM.chapter_id, timestamp: new Date().toISOString(),
+    session_status: 'completed',
+    correct_answers: m.correct, wrong_answers: m.wrong,
+    questions_attempted: m.attempted, total_questions: m.total,
+    retry_count: m.retries, hints_used: m.hints,
+    total_hints_embedded: m.total_hints,
+    time_spent_seconds: m.time || null,
+    topic_completion_ratio: Math.round(m.completion * 100) / 100,
+    accuracy_rolling: m.attempted ? Math.round((m.correct / m.attempted) * 100) / 100 : 0,
+    hint_frequency: m.attempted ? Math.round((m.hints / m.attempted) * 100) / 100 : 0,
+    diagnostic_flags: LM.diagnostic_flags,
+    scaffolding_log: LM.scaffolding_log,
+    misconception_flags: LM.misconceptions
+  };
+  document.getElementById('payload-pre').textContent = JSON.stringify(payload, null, 2);
+  show('summary');
+}
+
+function copyPayload(btn) {
+  navigator.clipboard.writeText(document.getElementById('payload-pre').textContent).then(() => {
+    btn.textContent = '✅ Copied!';
+    setTimeout(() => btn.textContent = '📋 Copy JSON', 2000);
+  });
+}
+
+// ─── SPARKS ───────────────────────────────────────────────────
+function spawnSparks() {
+  const emojis = ['⭐','✨','🌟','💫','🎉'];
+  for (let i = 0; i < 7; i++) {
+    const el = document.createElement('span');
+    el.className = 'spark';
+    el.textContent = emojis[Math.floor(Math.random()*emojis.length)];
+    el.style.cssText = `left:${15+Math.random()*70}vw;top:${20+Math.random()*60}vh;animation-delay:${Math.random()*0.5}s`;
+    document.body.appendChild(el);
+    setTimeout(() => el.remove(), 1200);
+  }
+}
+</script>
+</body>
+</html>
