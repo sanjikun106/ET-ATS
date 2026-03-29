@@ -2,15 +2,15 @@
 
 Adaptive Tutoring System for Grade 8 Mathematics covering **Squares, Square Roots, Cubes, and Cube Roots**.
 
-This project is a browser-based ITS that combines **structured content**, **concept-wise practice**, **60 questions**, **adaptive hints**, **remedial branching**, **learner-model fields**, and **meaningful PED logic**.
+This project is a browser-based ITS that combines **structured content**, **concept-wise practice**, **60 questions**, **adaptive hints**, **remedial branching**, **learner-model fields**, and **meaningful PED logic** across two related Grade 8 mathematics chapters: **Squares & Square Roots** and **Cubes & Cube Roots**.
 
 ## Live Link
 
 Deployed system: [https://sanjikun106.github.io/ET-ATS/](https://sanjikun106.github.io/ET-ATS/)
 
-## Chapter Coverage
+## Coverage
 
-- 1 complete mathematics chapter: **Squares, Square Roots, Cubes & Cube Roots**
+- 2 related Grade 8 mathematics chapters: **Squares & Square Roots** and **Cubes & Cube Roots**
 - 6 subtopics
 - 20 concepts
 - 60 practice questions
