@@ -579,6 +579,10 @@ table{border-collapse:collapse;width:100%;margin:12px 0}
       <h3>Topic Mastery</h3>
       <div id="sum-mastery"></div>
     </div>
+    <div class="sum-card sum-full" id="sum-recommendation" style="display:none">
+      <h3>🎯 Your Next Step</h3>
+      <div id="recommendation-body" style="padding:8px 0;font-size:1rem;line-height:1.7"></div>
+    </div>
     <div class="sum-card sum-full">
       <h3>📤 Merge Team Payload (JSON)</h3>
       <div class="payload-pre" id="payload-pre"></div>
@@ -591,6 +595,17 @@ table{border-collapse:collapse;width:100%;margin:12px 0}
 </div>
 
 <script>
+// ═══════════════════════════════════════════════════════════════
+// MERGE PLATFORM INTEGRATION — extract redirect URL params
+// ═══════════════════════════════════════════════════════════════
+(function () {
+  const p = new URLSearchParams(window.location.search);
+  const t = p.get('token'), sid = p.get('student_id'), sesid = p.get('session_id');
+  if (t)     sessionStorage.setItem('merge_token', t);
+  if (sid)   sessionStorage.setItem('merge_student_id', sid);
+  if (sesid) sessionStorage.setItem('merge_session_id', sesid);
+})();
+
 // ═══════════════════════════════════════════════════════════════
 // STATE
 // ═══════════════════════════════════════════════════════════════
@@ -721,13 +736,14 @@ function syncContentLabels() {
 }
 
 function initLM(name) {
-  // session_id from name only (as requested)
-  const sid = name.toLowerCase().replace(/\s+/g, '_')
-    + '_' + Date.now().toString().slice(-8);
+  const mergeStudentId = sessionStorage.getItem('merge_student_id');
+  const mergeSessionId = sessionStorage.getItem('merge_session_id');
+  // Fall back to name-based ids if not coming from Merge portal
+  const sid = mergeStudentId || (name.toLowerCase().replace(/\s+/g, '_') + '_' + Date.now().toString().slice(-8));
   LM = {
     student_id: sid, student_name: name,
-    session_id: 'sess_' + sid,
-    chapter_id: 'grade8_squares_and_cube_roots',
+    session_id: mergeSessionId || ('sess_' + sid),
+    chapter_id: 'grade8_squares_cubes',
     session_start_utc: new Date().toISOString(),
     kc: {},
     subtopic_done: Array(CHAPTER.subtopics.length).fill(0),
@@ -872,8 +888,14 @@ function show(id) {
 // ─── SPLASH ───────────────────────────────────────────────────
 setTimeout(() => {
   syncContentLabels();
-  show('entry');
-  document.getElementById('name-input').focus();
+  const mergeStudentId = sessionStorage.getItem('merge_student_id');
+  if (mergeStudentId) {
+    // Auto-start from Merge portal redirect — skip name entry
+    startSession(mergeStudentId);
+  } else {
+    show('entry');
+    document.getElementById('name-input').focus();
+  }
 }, 2000);
 document.addEventListener('keydown', e => {
   if (e.key === 'Enter') {
@@ -892,8 +914,8 @@ document.addEventListener('keydown', e => {
 });
 
 // ─── SESSION START ─────────────────────────────────────────────
-function startSession() {
-  const name = document.getElementById('name-input').value.trim();
+function startSession(autoName) {
+  const name = autoName || document.getElementById('name-input').value.trim();
   if (!name) {
     document.getElementById('name-input').style.borderColor = 'var(--red)';
     return;
@@ -2097,11 +2119,15 @@ function showSummary() {
     </div>`;
   }).join('');
 
+  // correct_answers + wrong_answers must equal questions_attempted (Merge API constraint)
+  const correct_answers = m.correct;
+  const wrong_answers = Math.max(0, m.attempted - m.correct);
+
   const payload = {
     student_id: LM.student_id, session_id: LM.session_id,
     chapter_id: LM.chapter_id, timestamp: new Date().toISOString(),
     session_status: 'completed',
-    correct_answers: m.correct, wrong_answers: m.wrong,
+    correct_answers, wrong_answers,
     questions_attempted: m.attempted, total_questions: m.total,
     retry_count: m.retries, hints_used: m.hints,
     total_hints_embedded: m.total_hints,
@@ -2115,6 +2141,67 @@ function showSummary() {
   };
   document.getElementById('payload-pre').textContent = JSON.stringify(payload, null, 2);
   show('summary');
+
+  // Submit to Merge Recommendation API if this is a Merge portal session
+  const mergeToken = sessionStorage.getItem('merge_token');
+  if (mergeToken) submitToMergeAPI(payload, mergeToken, 'completed');
+}
+
+async function submitToMergeAPI(payload, token, status) {
+  const mergePayload = {
+    student_id:            payload.student_id,
+    session_id:            payload.session_id,
+    chapter_id:            payload.chapter_id,
+    timestamp:             payload.timestamp,
+    session_status:        status,
+    correct_answers:       payload.correct_answers,
+    wrong_answers:         payload.wrong_answers,
+    questions_attempted:   payload.questions_attempted,
+    total_questions:       payload.total_questions,
+    retry_count:           payload.retry_count,
+    hints_used:            payload.hints_used,
+    total_hints_embedded:  payload.total_hints_embedded,
+    time_spent_seconds:    payload.time_spent_seconds,
+    topic_completion_ratio: payload.topic_completion_ratio
+  };
+
+  const recDiv = document.getElementById('sum-recommendation');
+  const recBody = document.getElementById('recommendation-body');
+  recDiv.style.display = '';
+  recBody.innerHTML = '<em style="color:var(--text-muted)">Fetching your recommendation...</em>';
+
+  for (let attempt = 0; attempt < 3; attempt++) {
+    try {
+      const res = await fetch('https://kaushik-dev.online/api/recommend/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+        body: JSON.stringify(mergePayload)
+      });
+      const data = await res.json();
+      const rec = data.recommendation || {};
+      const stateColor = data.learning_state === 'strong' ? 'var(--green)' : data.learning_state === 'weak' ? 'var(--red)' : 'var(--accent)';
+      let html = `<div style="margin-bottom:10px">
+        <strong>Learning State:</strong> <span style="color:${stateColor};font-weight:700;text-transform:capitalize">${data.learning_state || '—'}</span>
+        &nbsp;·&nbsp; <strong>Performance:</strong> ${data.performance_score != null ? Math.round(data.performance_score * 100) + '%' : '—'}
+      </div>
+      <div style="margin-bottom:8px"><strong>Recommendation:</strong> ${rec.reason || '—'}</div>`;
+      if (rec.next_steps?.length) {
+        html += '<ul style="padding-left:20px;margin:6px 0">' + rec.next_steps.map(s => `<li>${s}</li>`).join('') + '</ul>';
+      }
+      if (rec.prerequisite_url) {
+        html += `<div style="margin-top:10px"><a href="${rec.prerequisite_url}" style="color:var(--primary-mid);font-weight:700">→ Go to prerequisite chapter</a></div>`;
+      }
+      recBody.innerHTML = html;
+      return;
+    } catch (err) {
+      if (attempt === 2) {
+        recBody.innerHTML = '<span style="color:var(--red)">Could not fetch recommendation. Please check your connection.</span>';
+        // Store payload for retry
+        try { localStorage.setItem('merge_pending_payload', JSON.stringify(mergePayload)); } catch (_) {}
+      }
+      await new Promise(r => setTimeout(r, 1000 * (attempt + 1)));
+    }
+  }
 }
 
 function copyPayload(btn) {
@@ -2123,6 +2210,39 @@ function copyPayload(btn) {
     setTimeout(() => btn.textContent = '📋 Copy JSON', 2000);
   });
 }
+
+// ─── MIDWAY EXIT — notify Merge API when student closes tab ──
+window.addEventListener('beforeunload', (e) => {
+  const mergeToken = sessionStorage.getItem('merge_token');
+  if (!mergeToken || !LM) return;
+  // Only fire if session hasn't been formally completed (summary not shown)
+  const active = document.querySelector('.screen.active');
+  if (active?.id === 'screen-summary') return;
+  e.preventDefault();
+  e.returnValue = 'Your progress will be saved. Are you sure you want to leave?';
+});
+
+window.addEventListener('unload', () => {
+  const mergeToken = sessionStorage.getItem('merge_token');
+  if (!mergeToken || !LM) return;
+  const active = document.querySelector('.screen.active');
+  if (active?.id === 'screen-summary') return;
+  const m = LM.metrics;
+  const correct_answers = m.correct;
+  const wrong_answers = Math.max(0, m.attempted - m.correct);
+  const payload = JSON.stringify({
+    student_id: LM.student_id, session_id: LM.session_id,
+    chapter_id: LM.chapter_id, timestamp: new Date().toISOString(),
+    session_status: 'exited_midway',
+    correct_answers, wrong_answers,
+    questions_attempted: m.attempted, total_questions: m.total,
+    retry_count: m.retries, hints_used: m.hints,
+    total_hints_embedded: m.total_hints,
+    time_spent_seconds: Math.round((Date.now() - sessionStart) / 1000),
+    topic_completion_ratio: Math.round(m.completion * 100) / 100
+  });
+  navigator.sendBeacon('https://kaushik-dev.online/api/recommend/', new Blob([payload], { type: 'application/json' }));
+});
 
 // ─── SPARKS ───────────────────────────────────────────────────
 function spawnSparks() {

@@ -1,0 +1,12 @@
+{
+  "name": "grade8-squares-cubes",
+  "version": "1.0.0",
+  "description": "Adaptive Tutoring System for Grade 8 Squares, Square Roots, Cubes, and Cube Roots",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
