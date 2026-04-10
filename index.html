@@ -584,10 +584,7 @@ table{border-collapse:collapse;width:100%;margin:12px 0}
       <div id="recommendation-body" style="padding:8px 0;font-size:1rem;line-height:1.7"></div>
     </div>
     <div class="sum-card sum-full">
-      <h3>📤 Merge Team Payload (JSON)</h3>
-      <div class="payload-pre" id="payload-pre"></div>
       <div class="sum-btn-row">
-        <button class="btn-copy" onclick="copyPayload(this)">📋 Copy JSON</button>
         <button class="btn-next-concept" style="width:auto;padding:10px 24px" onclick="goToDashboard()">← Back to Chapter</button>
       </div>
     </div>
@@ -2139,7 +2136,6 @@ function showSummary() {
     scaffolding_log: LM.scaffolding_log,
     misconception_flags: LM.misconceptions
   };
-  document.getElementById('payload-pre').textContent = JSON.stringify(payload, null, 2);
   show('summary');
 
   // Submit to Merge Recommendation API if this is a Merge portal session
@@ -2204,12 +2200,6 @@ async function submitToMergeAPI(payload, token, status) {
   }
 }
 
-function copyPayload(btn) {
-  navigator.clipboard.writeText(document.getElementById('payload-pre').textContent).then(() => {
-    btn.textContent = '✅ Copied!';
-    setTimeout(() => btn.textContent = '📋 Copy JSON', 2000);
-  });
-}
 
 // ─── MIDWAY EXIT — notify Merge API when student closes tab ──
 window.addEventListener('beforeunload', (e) => {
