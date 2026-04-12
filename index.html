@@ -2123,7 +2123,7 @@ function showSummary() {
   const payload = {
     student_id: LM.student_id, session_id: LM.session_id,
     chapter_id: LM.chapter_id, timestamp: new Date().toISOString(),
-    session_status: 'completed',
+    session_status: m.attempted >= m.total ? 'completed' : 'in_progress',
     correct_answers, wrong_answers,
     questions_attempted: m.attempted, total_questions: m.total,
     retry_count: m.retries, hints_used: m.hints,
@@ -2223,7 +2223,7 @@ window.addEventListener('unload', () => {
   const payload = JSON.stringify({
     student_id: LM.student_id, session_id: LM.session_id,
     chapter_id: LM.chapter_id, timestamp: new Date().toISOString(),
-    session_status: 'exited_midway',
+    session_status: 'in_progress',
     correct_answers, wrong_answers,
     questions_attempted: m.attempted, total_questions: m.total,
     retry_count: m.retries, hints_used: m.hints,
