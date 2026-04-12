@@ -2140,7 +2140,7 @@ function showSummary() {
 
   // Submit to Merge Recommendation API if this is a Merge portal session
   const mergeToken = sessionStorage.getItem('merge_token');
-  if (mergeToken) submitToMergeAPI(payload, mergeToken, 'completed');
+  if (mergeToken) submitToMergeAPI(payload, mergeToken, payload.session_status);
 }
 
 async function submitToMergeAPI(payload, token, status) {
