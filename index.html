@@ -2202,36 +2202,39 @@ async function submitToMergeAPI(payload, token, status) {
 
 
 // ─── MIDWAY EXIT — notify Merge API when student closes tab ──
-window.addEventListener('beforeunload', (e) => {
-  const mergeToken = sessionStorage.getItem('merge_token');
-  if (!mergeToken || !LM) return;
-  // Only fire if session hasn't been formally completed (summary not shown)
-  const active = document.querySelector('.screen.active');
-  if (active?.id === 'screen-summary') return;
-  e.preventDefault();
-  e.returnValue = 'Your progress will be saved. Are you sure you want to leave?';
-});
-
-window.addEventListener('unload', () => {
-  const mergeToken = sessionStorage.getItem('merge_token');
-  if (!mergeToken || !LM) return;
-  const active = document.querySelector('.screen.active');
-  if (active?.id === 'screen-summary') return;
+function buildExitPayload() {
   const m = LM.metrics;
-  const correct_answers = m.correct;
-  const wrong_answers = Math.max(0, m.attempted - m.correct);
-  const payload = JSON.stringify({
+  return {
     student_id: LM.student_id, session_id: LM.session_id,
     chapter_id: LM.chapter_id, timestamp: new Date().toISOString(),
-    session_status: 'in_progress',
-    correct_answers, wrong_answers,
+    session_status: 'exited_midway',
+    correct_answers: m.correct,
+    wrong_answers: Math.max(0, m.attempted - m.correct),
     questions_attempted: m.attempted, total_questions: m.total,
     retry_count: m.retries, hints_used: m.hints,
     total_hints_embedded: m.total_hints,
     time_spent_seconds: Math.round((Date.now() - sessionStart) / 1000),
     topic_completion_ratio: Math.round(m.completion * 100) / 100
+  };
+}
+
+window.addEventListener('beforeunload', (e) => {
+  const mergeToken = sessionStorage.getItem('merge_token');
+  if (!mergeToken || !LM) return;
+  const active = document.querySelector('.screen.active');
+  if (active?.id === 'screen-summary') return;
+
+  // Show browser exit alert
+  e.preventDefault();
+  e.returnValue = 'Your session progress will be recorded. Are you sure you want to leave?';
+
+  // Call recommendations API with keepalive so it fires even as tab closes
+  fetch('https://kaushik-dev.online/api/recommend/', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${mergeToken}` },
+    body: JSON.stringify(buildExitPayload()),
+    keepalive: true
   });
-  navigator.sendBeacon('https://kaushik-dev.online/api/recommend/', new Blob([payload], { type: 'application/json' }));
 });
 
 // ─── SPARKS ───────────────────────────────────────────────────
